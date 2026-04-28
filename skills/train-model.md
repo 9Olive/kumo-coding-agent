@@ -193,10 +193,21 @@ job_id = training_job.job_id
 print(f"Training job ID: {job_id}")
 # Write this to scratch/YYYY-MM-DD_train.md
 
-# Re-attach from another session
+# Re-attach from another session (monitor progress / retrieve metrics)
 training_job = kumoai.TrainingJob(job_id)
 result = training_job.attach()
+
+# Reconstruct Trainer for batch prediction in a new session
+# Use this when you want to skip training and call .predict() directly
+trainer = kumoai.pquery.predictive_query.Trainer(job_id)
 ```
+
+> **`kumoai.TrainingJob(job_id)`** — re-attach to a running or completed job to
+> monitor progress or retrieve metrics.
+>
+> **`kumoai.pquery.predictive_query.Trainer(job_id)`** — reconstruct a `Trainer`
+> object to call `.predict()` in a later session without re-training. Use this
+> whenever a training job ID is known and you only need batch prediction.
 
 ### Step 6: Evaluate Results
 
@@ -349,7 +360,8 @@ Document in scratch file:
 | Generate prediction table | `pquery.generate_prediction_table(plan)` | `non_blocking` |
 | Predict | `trainer.predict(graph, pred_table)` | `output_config`, `binary_classification_threshold`, `num_workers` |
 | Save model | `result.tag("name")` | — |
-| Re-attach | `kumoai.TrainingJob(job_id).attach()` | `job_id` |
+| Re-attach (monitor/metrics) | `kumoai.TrainingJob(job_id).attach()` | `job_id` |
+| Re-attach (predict only) | `kumoai.pquery.predictive_query.Trainer(job_id)` | `job_id` |
 
 ### RunMode
 
