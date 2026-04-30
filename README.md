@@ -1,8 +1,8 @@
 # Kumo Coding Agent
 
-A portable collection of context and skills that extends any LLM coding tool with deep knowledge of the Kumo ML platform.
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e11edc4a-fafc-4f79-b9f6-6fbdf424effd" />
 
-Works with **Claude Code**, **Codex**, **Cursor**, and any tool that reads markdown.
+A portable collection of context and skills that extends any LLM coding tool with deep knowledge of the Kumo ML platform. Works with **Claude Code**, **Codex**, **Cursor**, and any tool that reads markdown.
 
 ---
 
