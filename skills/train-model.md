@@ -21,6 +21,8 @@ Train a GNN model on historical relational data using the Kumo SDK for maximum p
 ```python
 import kumoai
 from kumoai.pquery import RunMode
+from kumoai.trainer.config import OutputConfig
+from kumoapi.jobs import MetadataField
 
 kumoai.init(url="https://app.kumo.ai", api_key="YOUR_API_KEY")
 ```
@@ -56,8 +58,8 @@ print(f"Task type: {pquery.get_task_type()}")
 **Save for reuse:**
 
 ```python
-pquery.save("scratch/pquery_revenue_30d")
-# Later: pquery = kumoai.PredictiveQuery.load("scratch/pquery_revenue_30d")
+pq_id = pquery.save("revenue_30d")
+# Later: pquery = kumoai.PredictiveQuery.load("revenue_30d")
 ```
 
 ### Step 3: Generate Training Table
@@ -89,13 +91,17 @@ train_table = train_table_job.attach()
 **Inspect the training table before proceeding:**
 
 ```python
-print(f"Row count: {train_table.count()}")
-train_table.head(n=10)
-train_table.stats()
-train_table.label_distribution()  # Check for class imbalance
+train_df = train_table.data_df()
+print(f"Row count: {len(train_df)}")
+print(train_df.head(10))
+print(train_df.dtypes)
+
+# Column names reflect the PQL PREDICT clause — inspect them to find the target
+print(train_df.columns.tolist())
+print(train_df.describe())  # distribution stats for all numeric columns
 ```
 
-**Decision point**: If `label_distribution()` shows severe imbalance (e.g.,
+**Decision point**: If the target distribution shows severe imbalance (e.g.,
 99% negative for classification), the model may struggle. Consider adjusting
 the time window, entity filter, or using `FocalLossConfig` in the ModelPlan.
 
@@ -199,15 +205,15 @@ result = training_job.attach()
 
 # Reconstruct Trainer for batch prediction in a new session
 # Use this when you want to skip training and call .predict() directly
-trainer = kumoai.pquery.predictive_query.Trainer(job_id)
+trainer = kumoai.Trainer.load(job_id)
 ```
 
 > **`kumoai.TrainingJob(job_id)`** — re-attach to a running or completed job to
 > monitor progress or retrieve metrics.
 >
-> **`kumoai.pquery.predictive_query.Trainer(job_id)`** — reconstruct a `Trainer`
-> object to call `.predict()` in a later session without re-training. Use this
-> whenever a training job ID is known and you only need batch prediction.
+> **`kumoai.Trainer.load(job_id)`** — reconstruct a `Trainer` object to call
+> `.predict()` in a later session without re-training. Use this whenever a
+> training job ID is known and you only need batch prediction.
 
 ### Step 6: Evaluate Results
 
@@ -286,13 +292,13 @@ pred_table = pquery.generate_prediction_table(pred_plan, non_blocking=False)
 prediction_job = trainer.predict(
     graph=graph,
     prediction_table=pred_table,
-    output_config=kumoai.OutputConfig(
+    output_config=OutputConfig(
         output_types={"predictions"},          # or {"predictions", "embeddings"}
         output_connector=connector,
         output_table_name="revenue_predictions",
         output_metadata_fields=[
-            kumoai.MetadataField.JOB_TIMESTAMP,
-            kumoai.MetadataField.ANCHOR_TIMESTAMP,
+            MetadataField.JOB_TIMESTAMP,
+            MetadataField.ANCHOR_TIMESTAMP,
         ],
     ),
     binary_classification_threshold=0.5,       # Optional: for binary class labels
@@ -316,16 +322,19 @@ print(f"Row count: {len(predictions_df)}")
 Persist everything for reproducibility and future sessions.
 
 ```python
-# Save artifacts
-pquery.save("scratch/pquery_revenue_30d")
-graph.save("scratch/graph_ecom")
+# Save PredictiveQuery to Kumo platform (returns an ID or template name)
+# Graph is saved automatically when pquery is saved
+pq_id = pquery.save("revenue_30d")
+print(f"PredictiveQuery saved: {pq_id}")
+# Reload later: pquery = kumoai.PredictiveQuery.load("revenue_30d")
 
 # Save predictions locally
 predictions_df.to_parquet("scratch/predictions_revenue_30d.parquet")
 
-# Tag the model for later retrieval
-result.tag("revenue-v1")
-# Later: model = kumoai.Model.load_by_tag(tag="revenue-v1")
+# Retrieve the trained model later using the custom_tags set in trainer.fit()
+# trainer = kumoai.Trainer.load_from_tags({"task": "revenue_prediction", "version": "v1"})
+# Or by job ID:
+# trainer = kumoai.Trainer.load(job_id)
 ```
 
 Document in scratch file:
@@ -359,9 +368,10 @@ Document in scratch file:
 | Plan prediction table | `pquery.suggest_prediction_table_plan()` | `run_mode` |
 | Generate prediction table | `pquery.generate_prediction_table(plan)` | `non_blocking` |
 | Predict | `trainer.predict(graph, pred_table)` | `output_config`, `binary_classification_threshold`, `num_workers` |
-| Save model | `result.tag("name")` | — |
+| Save pquery | `pquery.save("template_name")` | saves to Kumo, returns ID |
+| Load model by tags | `kumoai.Trainer.load_from_tags(tags)` | tags dict from `custom_tags` |
 | Re-attach (monitor/metrics) | `kumoai.TrainingJob(job_id).attach()` | `job_id` |
-| Re-attach (predict only) | `kumoai.pquery.predictive_query.Trainer(job_id)` | `job_id` |
+| Re-attach (predict only) | `kumoai.Trainer.load(job_id)` | `job_id` |
 
 ### RunMode
 
@@ -384,7 +394,7 @@ Document in scratch file:
 | `PQLSyntaxError` | Invalid PQL query | Run `pquery.validate(verbose=True)` for details |
 | `Missing foreign key` | No direct FK between entity and target | Check `graph.get_edge_stats()` and add missing edge |
 | `Semantic Type Mismatch` | SUM/AVG on categorical column | Use COUNT, or pick a numeric column |
-| `JobFailedError` | Training or prediction job failed | Check `job.error_message()` for details |
+| `JobFailedError` | Training or prediction job failed | Check `training_job.status().event_log` for details |
 | `TimeoutError` | Job exceeded time limit | Use `non_blocking=True` and monitor |
 | `ResourceNotFoundError` | Model/table ID not found | Verify ID or re-run job |
 | `Cannot set Time Column to dtype 'kumo.string'` | String column set as time | Cast to timestamp before building graph |
@@ -404,5 +414,5 @@ Document in scratch file:
 - [ ] Training progress checked for overfitting (train vs val metrics)
 - [ ] Weak signals investigated if metrics are poor
 - [ ] Batch predictions generated and output shape verified
-- [ ] State saved to `scratch/` (job IDs, metrics, model tags)
-- [ ] Model tagged for retrieval
+- [ ] State saved to `scratch/` (job IDs, metrics, pquery ID)
+- [ ] Model retrievable via `Trainer.load(job_id)` or `Trainer.load_from_tags(tags)`
