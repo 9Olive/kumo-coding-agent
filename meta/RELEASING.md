@@ -53,7 +53,7 @@ gh release create v1.1.0 --title "v1.1.0" --notes "
 - Fixed connector init examples
 
 ## Upgrade
-git submodule update --remote kumo-coding-agent
+cd kumo-coding-agent && git pull
 "
 ```
 
@@ -63,26 +63,26 @@ This creates a release page on GitHub that users can see.
 
 ## How Users Pin to a Version
 
-Users who added the agent as a git submodule can pin to a specific version:
+Users can pin to a specific version by checking out the tag:
 
 ```bash
 cd kumo-coding-agent
 git fetch --tags
 git checkout v1.1.0
-cd ..
-git add kumo-coding-agent
-git commit -m "pin kumo-coding-agent to v1.1.0"
 ```
 
-To update to the latest:
+To update to a newer version:
 
 ```bash
 cd kumo-coding-agent
 git fetch --tags
 git checkout v1.2.0
-cd ..
-git add kumo-coding-agent
-git commit -m "update kumo-coding-agent to v1.2.0"
+```
+
+To always track the latest:
+
+```bash
+cd kumo-coding-agent && git pull
 ```
 
 ---

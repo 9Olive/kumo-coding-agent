@@ -30,7 +30,13 @@ git clone https://github.com/kumo-ai/kumo-coding-agent.git
 echo 'Also read kumo-coding-agent/CLAUDE.md for Kumo agent capabilities.' >> CLAUDE.md
 ```
 
-**3. Install slash commands (optional):**
+**3. Set up permissions (zero-prompt setup):**
+
+```bash
+bash kumo-coding-agent/setup.sh
+```
+
+**4. Install slash commands (optional):**
 
 ```bash
 npx skills add kumo-ai/kumo-coding-agent --agent claude-code
@@ -38,7 +44,7 @@ npx skills add kumo-ai/kumo-coding-agent --agent claude-code
 
 This installs `/kumo-issue` and `/kumo-pr` for reporting bugs and contributing fixes.
 
-**4. Start using it.** Ask questions in natural language:
+**5. Start using it.** Ask questions in natural language:
 
 ```
 "Predict which customers will churn in the next 30 days by running RFM on the SALT dataset"
@@ -55,15 +61,25 @@ cd your-project
 git clone https://github.com/kumo-ai/kumo-coding-agent.git
 ```
 
-**2. No extra setup needed.** Codex reads `AGENTS.md` automatically.
+**2. Tell Codex to read the agent:**
 
-**3. Install slash commands (optional).** Inside a Codex session:
+```bash
+echo 'Also read kumo-coding-agent/CLAUDE.md for Kumo agent capabilities.' >> AGENTS.md
+```
+
+**3. Set up permissions (zero-prompt setup):**
+
+```bash
+bash kumo-coding-agent/setup.sh
+```
+
+**4. Install slash commands (optional).** Inside a Codex session:
 
 ```
 $skill-installer install https://github.com/kumo-ai/kumo-coding-agent
 ```
 
-**4. Start using it.** Ask questions in natural language.
+**5. Start using it.** Ask questions in natural language.
 
 ---
 
