@@ -21,15 +21,6 @@ A portable collection of markdown files that teaches your LLM tool how to use th
 
 ### Add to your project
 
-**Using git submodule (recommended — supports updates):**
-
-```bash
-cd your-project
-git submodule add https://github.com/kumo-ai/kumo-coding-agent.git kumo-coding-agent
-```
-
-**Or clone directly:**
-
 ```bash
 cd your-project
 git clone https://github.com/kumo-ai/kumo-coding-agent.git kumo-coding-agent
@@ -37,13 +28,23 @@ git clone https://github.com/kumo-ai/kumo-coding-agent.git kumo-coding-agent
 
 ### Tool-specific setup
 
-**Claude Code** — add a reference to your project's `CLAUDE.md`:
+**Claude Code** — add a reference to your project's `CLAUDE.md`, then run the one-time permissions setup:
 
 ```bash
 echo 'Also read kumo-coding-agent/CLAUDE.md for Kumo agent capabilities.' >> CLAUDE.md
+bash kumo-coding-agent/setup.sh
 ```
 
-**Codex** — reads `AGENTS.md` automatically. No extra setup needed.
+`setup.sh` creates `.claude/settings.json` (Claude Code) and `.codex/config.toml` (Codex) in your project root so the agent can use `.venv/` without permission prompts. It is idempotent — safe to run again if you already have either file.
+
+**Codex** — add a reference to your project's `AGENTS.md`, then run the permissions setup:
+
+```bash
+echo 'Also read kumo-coding-agent/CLAUDE.md for Kumo agent capabilities.' >> AGENTS.md
+bash kumo-coding-agent/setup.sh
+```
+
+Codex only scans from the Git root down to the current directory — it will not find `kumo-coding-agent/AGENTS.md` automatically.
 
 **Cursor** — reads `.cursor/rules/` automatically. No extra setup needed.
 
@@ -70,10 +71,6 @@ $skill-installer install https://github.com/kumo-ai/kumo-coding-agent
 ## Updating
 
 ```bash
-# Git submodule:
-git submodule update --remote kumo-coding-agent
-
-# Git clone:
 cd kumo-coding-agent && git pull
 ```
 
