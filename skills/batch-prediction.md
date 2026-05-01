@@ -25,6 +25,8 @@ machine, or a scheduled script — without rerunning training.
 
 ```python
 import kumoai
+from kumoai.trainer.config import OutputConfig
+from kumoapi.jobs import MetadataField
 
 kumoai.init(url="https://app.kumo.ai", api_key="YOUR_API_KEY")
 
@@ -81,7 +83,7 @@ from datetime import date
 
 output_table = f"revenue_predictions_{date.today().strftime('%Y%m%d')}"
 
-output_config = kumoai.OutputConfig(
+output_config = OutputConfig(
     output_types={"predictions"},      # or {"predictions", "embeddings"}
     output_connector=connector,
     output_table_name=output_table,
@@ -94,13 +96,13 @@ All runs land in one table. Use metadata fields so downstream consumers can
 filter or partition by run time.
 
 ```python
-output_config = kumoai.OutputConfig(
+output_config = OutputConfig(
     output_types={"predictions"},
     output_connector=connector,
     output_table_name="revenue_predictions",
     output_metadata_fields=[
-        kumoai.MetadataField.JOB_TIMESTAMP,
-        kumoai.MetadataField.ANCHOR_TIMESTAMP,
+        MetadataField.JOB_TIMESTAMP,
+        MetadataField.ANCHOR_TIMESTAMP,
     ],
 )
 ```
@@ -143,7 +145,7 @@ print(f"Prediction job ID: {prediction_job.job_id}")
 # Write this to scratch/YYYY-MM-DD_<task>.md
 
 # Re-attach in a later session
-prediction_job = kumoai.PredictionJob(job_id="predictionjob-xyz...")
+prediction_job = kumoai.BatchPredictionJob("predictionjob-xyz...")
 prediction_result = prediction_job.attach()
 ```
 
@@ -170,13 +172,16 @@ sees the same schema it was trained on; only the rows differ.
 trainer = kumoai.Trainer.load("trainingjob-abc123...")
 pquery  = kumoai.PredictiveQuery.load_from_training_job("trainingjob-abc123...")
 
-graph = kumoai.Graph(name="prediction_graph", connector=connector)
-graph.add_table(kumoai.Table(
-    name="ads",                              # same alias as training graph
-    data=connector.table(args.ads_source),   # source chosen by CLI arg
-    ...
-))
-# ... add remaining tables and edges with the same aliases as training ...
+graph = kumoai.Graph(
+    tables={
+        "ads": kumoai.Table(                         # same alias as training graph
+            source_table=connector.table(args.ads_source),  # source chosen by CLI arg
+            primary_key="...",                       # same PK as training graph
+        ),
+        # ... remaining tables with same aliases, PKs, and time columns as training ...
+    },
+    edges=[...],  # same edge definitions as training graph
+)
 pquery.graph = graph
 ```
 
@@ -336,11 +341,11 @@ jobs:
 | Set anchor time | `pred_plan.anchor_time = datetime.datetime(...)` | datetime object |
 | Generate prediction table | `pquery.generate_prediction_table(plan, non_blocking=True)` | `non_blocking` |
 | Swap graph | `pquery.graph = new_graph` | replacement graph object |
-| Configure output (new table) | `kumoai.OutputConfig(output_table_name=f"table_{date}")` | date-stamped name |
-| Configure output (append) | `kumoai.OutputConfig(..., output_metadata_fields=[...])` | `JOB_TIMESTAMP`, `ANCHOR_TIMESTAMP` |
+| Configure output (new table) | `OutputConfig(output_table_name=f"table_{date}")` | date-stamped name |
+| Configure output (append) | `OutputConfig(..., output_metadata_fields=[...])` | `JOB_TIMESTAMP`, `ANCHOR_TIMESTAMP` |
 | Run prediction | `trainer.predict(graph, pred_table, output_config, ...)` | `num_workers`, `non_blocking` |
 | Check job status | `prediction_job.status()` | — |
-| Reattach prediction | `kumoai.PredictionJob(job_id).attach()` | prediction job ID |
+| Reattach prediction | `kumoai.BatchPredictionJob(job_id).attach()` | prediction job ID |
 | Get results as DataFrame | `prediction_result.predictions_df()` | — |
 
 ---
@@ -355,7 +360,7 @@ jobs:
 | Graph validation error after swap | Swapped graph is missing tables or edges the PQL query references | Swapped graph must cover all tables and edges in the original PQL query |
 | Output table already exists | Write-new strategy with a name collision | Include date/timestamp in `output_table_name` |
 | `JobFailedError` during prediction | Graph schema mismatch vs training time | Column names and dtypes must exactly match training-time schema |
-| Job stalls in `RUNNING` state | Job queued or stalled | Call `prediction_job.status()` for the event log; check `prediction_job.error_message()` |
+| Job stalls in `RUNNING` state | Job queued or stalled | Call `prediction_job.status()` and inspect `status().event_log` for details |
 | No embeddings in output | `output_types={"predictions"}` used for a link prediction model | Set `output_types={"embeddings"}` (or `{"predictions", "embeddings"}`) |
 | `ConnectionError` | Bad credentials or unreachable API | Verify `kumoai.init()` parameters and network access |
 
