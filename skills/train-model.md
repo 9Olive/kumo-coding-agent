@@ -272,7 +272,7 @@ Generate predictions on new or current entities.
 **Step 7a: Generate prediction table**
 
 ```python
-pred_plan = pquery.suggest_prediction_table_plan(run_mode=RunMode.FAST)
+pred_plan = pquery.suggest_prediction_table_plan()
 
 # Customize anchor time for temporal queries:
 import datetime
@@ -365,7 +365,7 @@ Document in scratch file:
 | Training curves | `training_job.progress()` | Per-epoch train/val metrics |
 | Debug failed job | `training_job.status().event_log` | Stage-by-stage log |
 | Cancel job | `training_job.cancel()` | — |
-| Plan prediction table | `pquery.suggest_prediction_table_plan()` | `run_mode` |
+| Plan prediction table | `pquery.suggest_prediction_table_plan()` | — |
 | Generate prediction table | `pquery.generate_prediction_table(plan)` | `non_blocking` |
 | Predict | `trainer.predict(graph, pred_table)` | `output_config`, `binary_classification_threshold`, `num_workers` |
 | Save pquery | `pquery.save("template_name")` | saves to Kumo, returns ID |

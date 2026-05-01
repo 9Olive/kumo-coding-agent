@@ -60,9 +60,8 @@ pred_plan.anchor_time = datetime.datetime(2025, 6, 1)   # historical date
 # or: pred_plan.anchor_time = datetime.datetime.now()   # score as of today
 
 # For forecasting tasks only:
-# pred_plan.forecast_length = 12 # <-- This is an arbitrary value. Values should match training job configuration. 
-# pred_plan.lag_timesteps = 7 # <-- This is an arbitrary value. Values should match training job co
-nfiguration.
+# pred_plan.forecast_length = 12  # must match training job configuration
+# pred_plan.lag_timesteps = 7     # must match training job configuration
 
 pred_table_job = pquery.generate_prediction_table(pred_plan, non_blocking=True)
 pred_table = pred_table_job.attach()
