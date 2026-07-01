@@ -160,7 +160,7 @@ fails, defaults to `,`.
 
 ### Local Files (CSV, Parquet)
 
-**RFM only** (fine-tuned SDK requires cloud storage):
+**RFM only** for direct pandas loading (fine-tuned SDK requires cloud storage, or use the `FileUploadConnector` shown above for direct file upload):
 
 ```python
 import pandas as pd
@@ -252,7 +252,7 @@ print(files)
 |-----------|-----------|-------|
 | "Data is in Snowflake" | `SnowflakeConnector` (SDK) or `from_snowflake` (RFM) | Most common for enterprise |
 | "Data is in S3" | `S3Connector` (SDK) or load to pandas (RFM) | Parquet format expected |
-| "I have CSV files" | Load to pandas → `from_data` (RFM only) | SDK requires cloud storage |
+| "I have CSV files" | Load to pandas → `from_data` (RFM only) | SDK requires cloud storage, or use `FileUploadConnector` |
 | "Data is in Databricks" | `DatabricksConnector` (SDK only) | fine-tuned SDK path |
 | "Data is in BigQuery" | `BigQueryConnector` (SDK only) | fine-tuned SDK path |
 | "I have a Semantic View" | `from_snowflake_semantic_view` (RFM) | Pre-validated graph structure |
