@@ -145,7 +145,7 @@ source code — do not trust this table if it may be stale.
 `=`, `!=`, `<`, `>`, `<=`, `>=`, `IS`, `IS NOT`, `IN`, `IS IN`, `LIKE`, `NOT LIKE`, `CONTAINS`, `NOT CONTAINS`, `STARTS WITH`, `ENDS WITH`
 
 **RunMode** (from `kumoapi/model_plan.py`):
-`DEBUG`, `FAST`, `NORMAL`, `BEST`
+`FAST`, `NORMAL`, `BEST`
 
 **Stype** (from `kumoapi/typing.py`):
 `numerical`, `categorical`, `multicategorical`, `ID`, `text`, `timestamp`, `sequence`, `image`, `unsupported`
