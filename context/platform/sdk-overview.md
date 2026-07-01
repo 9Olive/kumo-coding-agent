@@ -194,6 +194,7 @@ Edges are directional: from the table with the FK to the table with the PK.
 graph.validate()          # Structural + type checks
 graph.print_metadata()    # Summary of tables and columns
 graph.print_links()       # All FK -> PK edges
+graph.get_table_stats(wait_for="full")  # Per-column stats: min/max/mean/median/null_count/distributions
 ```
 
 ### Snapshot
@@ -618,6 +619,7 @@ endpoint.destroy()                         # Tear down endpoint
 | `Table` | `.validate()` | Check schema correctness |
 | `Graph` | `.validate()` | Structural checks |
 | `Graph` | `.infer_links()` | Auto-detect FK->PK edges |
+| `Graph` | `.get_table_stats(wait_for=)` | Per-column stats (min/max/mean/median/null_count/distributions) |
 | `PredictiveQuery` | `.validate()` | PQL syntax check |
 | `PredictiveQuery` | `.get_task_type()` | Infer ML task type |
 | `PredictiveQuery` | `.suggest_training_table_plan()` | Plan training data |
@@ -667,3 +669,4 @@ endpoint.destroy()                         # Tear down endpoint
 8. **Using wrong ModelPlan param names.** Use `optimization.base_lr` (not `learning_rate`), `optimization.max_epochs` (not `epochs`), `model_architecture.channels` (not `hidden_channels`). After training, inspect `result.model_plan` to see what AutoML actually chose.
 9. **Training on too-recent data.** Customize `plan.start_time`/`end_time` for sufficient history.
 10. **Forgetting to tag production models.** Use `result.tag()` for retrieval.
+
