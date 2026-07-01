@@ -45,7 +45,7 @@ Is the user exploring or prototyping?
 | **Customization** | Limited to PQL query + graph structure | Full control: hyperparameters, encoders, sampling |
 | **Explainability** | Feature importance via `ExplainConfig` | Holdout analysis, training curves, embeddings |
 | **Online serving** | Not available | Deploy as real-time endpoint |
-| **Python package** | `kumoai.experimental.rfm` | `kumoai` (full SDK) |
+| **Python package** | `kumoai.rfm` | `kumoai` (full SDK) |
 
 ---
 
