@@ -54,7 +54,7 @@ for the full catalog.
 
 ## Graph Construction
 
-There are six paths to build an RFM graph. Every path produces the same
+There are seven paths to build an RFM graph. Every path produces the same
 `rfm.Graph` object.
 
 ### Path 1 -- Local pandas DataFrames
@@ -101,7 +101,19 @@ graph = rfm.Graph.from_duckdb(
 )
 ```
 
-### Path 5 -- Databricks tables
+### Path 5 -- SQLite database
+
+```python
+graph = rfm.Graph.from_sqlite(
+    "data.db",
+    tables=["users", "orders", "items"],
+)
+```
+
+`from_sqlite` accepts a database path (`str`/`Path`), an `AdbcSqliteConnection`,
+or a connection config — not a raw `sqlite3.Connection`.
+
+### Path 6 -- Databricks tables
 
 ```python
 graph = rfm.Graph.from_databricks(
@@ -112,7 +124,7 @@ graph = rfm.Graph.from_databricks(
 )
 ```
 
-### Path 6 -- Manual SnowTable construction
+### Path 7 -- Manual SnowTable construction
 
 For finer control over database/schema per table:
 
