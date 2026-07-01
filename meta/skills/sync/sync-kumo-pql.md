@@ -136,6 +136,8 @@ platform/pql-errors.md:
 |-------|---------------|
 | `skills/write-pql.md` | Syntax changes, new aggregations, new time units |
 | `skills/debug-prediction.md` | New error messages or failure categories |
+| `skills/rfm-predict.md` | Query template table, aggregation functions, new time units, new syntax |
+| `skills/scope-prediction-task.md` | Query template table, aggregation functions, FOR EACH examples |
 
 ### Step 9: Grammar-First Verification
 
