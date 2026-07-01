@@ -183,7 +183,7 @@ print(f"Tracking URL: {training_job.tracking_url}")
 
 ```python
 # Poll status
-print(training_job.status())   # 'PENDING', 'RUNNING', 'COMPLETED', 'FAILED'
+print(training_job.status().status)   # 'PENDING', 'RUNNING', 'COMPLETED', 'FAILED'
 print(training_job.done())     # bool
 
 # Block until complete
