@@ -364,7 +364,7 @@ These do not exist in the PQL grammar:
 | Unsupported | Workaround |
 |-------------|------------|
 | `COUNT_DISTINCT` in RFM | Use `COUNT(orders.* WHERE orders.product_id IS NOT NULL, ...)` or switch to fine-tuned |
-| Past-only window `(-30, -1, days)` | Use `(-30, 1, days)` — window must extend into the future |
+| Past-only window `(-30, -1, days)` | Not expressible as a target window since start must be `>= 0`; use an entity-level `WHERE` filter instead, e.g. FOR EACH users.user_id WHERE SUM(orders.amount, -30, 0) > 100 |
 | `LIKE` filtering in RFM | Use `=` with exact values or `IN` with a list |
 | Multi-hop prediction | Break into separate queries along direct FK paths |
 
