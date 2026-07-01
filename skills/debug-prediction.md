@@ -171,7 +171,7 @@ test_sql = "SELECT 'KNOWN_GOOD_ID' AS USER_ID"
 | `column 'X' not found in table 'Y'` | Wrong column name or wrong table | Verify with `column_dict` or `EXPLAIN_PQL` |
 | `entity column must be a primary key` | FOR EACH uses a non-PK column | Change to the table's actual PK column |
 | `invalid time range` | Start >= end or negative values | Use `(0, N, days)` with 0 <= start < end |
-| `cannot apply SUM to categorical` | Aggregation/stype mismatch | Use COUNT or MODE for categorical columns |
+| `cannot apply SUM to categorical` | Aggregation/stype mismatch | Use COUNT for categorical columns |
 | `no path between tables` | Missing FK link in graph | Add edge with `graph.link()` or reconstruct graph |
 | `ASSUMING requires temporal aggregation` | Used ASSUMING with a static prediction | Add time range to the aggregation |
 | All predictions are NULL | Entity IDs not in source data | Check that `entity_sql` returns IDs present in the graph |
