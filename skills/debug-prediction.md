@@ -114,11 +114,10 @@ If you need to predict across `users -> orders -> products` (2 hops), break it i
 
 | Unsupported Operation | Alternative |
 |-----------------------|-------------|
-| `COUNT_DISTINCT` | Use SQL to pre-compute distinct counts, then predict on the result |
-| `FIRST` / `LAST` | Not available. Use SQL to extract first/last values. |
+| `COUNT_DISTINCT` | Blocked in RFM mode (fine-tuned only). Use SQL to pre-compute distinct counts for RFM. |
+| `FIRST` / `LAST` | Blocked in RFM mode (fine-tuned only). Use SQL to extract first/last values for RFM. |
 | `LIKE` / `CONTAINS` | Use SQL WHERE with LIKE, then pass filtered entity list via `entity_sql` |
 | Nested aggregations | `PREDICT AVG(SUM(...))` is invalid. Break into two queries. |
-| Link prediction | Predicting whether a relationship will form is not supported |
 | Static column in ASSUMING | `ASSUMING` only works with temporal aggregations |
 | `GROUP BY` in PQL | PQL does not support GROUP BY. Use `FOR EACH` for entity grouping. |
 | `ORDER BY` / `LIMIT` in PQL | Not supported. Apply ordering/limits in post-processing SQL. |
