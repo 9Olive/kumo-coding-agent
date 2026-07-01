@@ -215,7 +215,8 @@ Changes: <summary — e.g., 'new QuantileLossConfig, RunMode.TURBO added'>"
 
 | If This Changes | These Docs Need Updating |
 |-----------------|------------------------|
-| RunMode enum | sdk-overview.md, rfm-overview.md, skills/train-model.md, skills/rfm-predict.md |
+| RunMode enum (fine-tuned SDK kumoapi.model_plan.RunMode) | sdk-overview.md, skills/train-model.md |
+| RFM run_mode (separate str param, no DEBUG; only affected if the fast/normal/best set itself changes) | rfm-overview.md, skills/rfm-predict.md |
 | TimeUnit enum | pql-syntax.md, rfm-overview.md, skills/write-pql.md |
 | AggregationType enum | pql-syntax.md, rfm-overview.md |
 | Dtype / Stype enums | sdk-overview.md, graph-construction.md |
