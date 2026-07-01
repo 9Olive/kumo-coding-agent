@@ -438,8 +438,8 @@ metrics = result.metrics()
 holdout_df = result.holdout_df()          # Load into memory (cols: ENTITY, TARGET, TARGET_PRED)
 holdout_url = result.holdout_url()        # Presigned URL (large datasets)
 
-# Find jobs by the custom_tags set when Trainer.fit() was called
-jobs = kumoai.TrainingJob.search_by_tags({"model": "gnn", "horizon": "1"})
+# Re-create a Trainer from custom_tags set when Trainer.fit() was called
+trainer = kumoai.Trainer.load_from_tags({"model": "gnn", "horizon": "1"})
 ```
 
 **Job event log (debug failures):**
@@ -627,7 +627,7 @@ endpoint.destroy()                         # Tear down endpoint
 | `TrainingJobResult` | `.metrics()` | Evaluation results |
 | `TrainingJobResult` | `.model_plan` | Actual ModelPlan after AutoML |
 | `TrainingJobResult` | `.holdout_df()` | Holdout split as DataFrame (ENTITY, TARGET, TARGET_PRED) |
-| `TrainingJob` | `.search_by_tags(tags)` | Find jobs by custom tags set at training time (classmethod) |
+| `Trainer` | `.load_from_tags(tags)` | Reconstruct a Trainer from custom tags set at training time (classmethod) |
 | `TrainingJob` | `.progress()` | Per-epoch training metrics |
 | `TrainingJob` | `.attach()` | Block with live progress bar |
 | `TrainingJob` | `.cancel()` | Cancel in-progress job |
@@ -663,4 +663,4 @@ endpoint.destroy()                         # Tear down endpoint
 7. **Ignoring training table stats.** Call training_table.data_df().describe() and check the target columns value_counts() before training.
 8. **Using wrong ModelPlan param names.** Use `optimization.base_lr` (not `learning_rate`), `optimization.max_epochs` (not `epochs`), `model_architecture.channels` (not `hidden_channels`). After training, inspect `result.model_plan` to see what AutoML actually chose.
 9. **Training on too-recent data.** Customize `plan.start_time`/`end_time` for sufficient history.
-10. **Forgetting to tag production models.** Pass custom_tags to trainer.fit(...) at training time, then retrieve later via Trainer.load_from_tags(tags) or TrainingJob.search_by_tags(tags).
+10. **Forgetting to tag production models.** Pass custom_tags to trainer.fit(...) at training time, then retrieve later via Trainer.load_from_tags(tags).
