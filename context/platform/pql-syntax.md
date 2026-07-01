@@ -83,8 +83,6 @@ AGGREGATION(table.column)                          -- static aggregation (no tim
 | Window | Meaning |
 |--------|---------|
 | `(0, 30, days)` | Next 30 days from prediction time |
-| `(-7, 30, days)` | From 7 days ago to 30 days from now |
-| `(-INF, 30, days)` | From the infinite past to 30 days from now |
 | `(0, 24, hours)` | Next 24 hours |
 | `(0, 3, months)` | Next 3 months |
 
