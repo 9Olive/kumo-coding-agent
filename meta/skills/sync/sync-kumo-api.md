@@ -152,7 +152,7 @@ Primary doc to update: `platform/sdk-overview.md`
 
 Also update if enum values changed:
 - `platform/pql-syntax.md` (TimeUnit, AggregationType)
-- `platform/rfm-overview.md` (RunMode, run_mode values)
+- `platform/rfm-overview.md` (only if RFM run_mode str values fast/normal/best change; RFM run_mode is a different parameter from the fine-tuned SDK RunMode enum and has no DEBUG value, so a fine-tuned-only RunMode addition must not be propagated here)
 - `platform/graph-construction.md` (Dtype, Stype)
 
 Update Source headers with version and date.
