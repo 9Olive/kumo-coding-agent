@@ -37,7 +37,7 @@ Is the user exploring or prototyping?
 | Dimension | RFM Zero-Shot | fine-tuned SDK Training |
 |-----------|---------------|------------------------|
 | **Setup time** | Minutes | Hours (first run), faster with templates |
-| **Prediction latency** | Seconds to minutes | Minutes (batch), ms (online endpoint) |
+| **Prediction latency** | Seconds to minutes | Minutes (batch) |
 | **Accuracy** | Good baseline (~0.6–0.75 AUC typical) | Higher ceiling (~0.75–0.95 AUC with good data) |
 | **Data requirement** | Works with small datasets | Needs sufficient history (>10K entity rows, >100K events) |
 | **Iteration speed** | Instant — change query, re-predict | Slow — retrain per change (hours) |
