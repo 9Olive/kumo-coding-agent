@@ -155,7 +155,7 @@ orders_table.validate()
 | Stype | Description | Predictable? | Use With |
 |-------|-------------|-------------|----------|
 | `numerical` | Continuous numeric | Yes | SUM, AVG, MIN, MAX |
-| `categorical` | Discrete categories | Yes | COUNT, MODE |
+| `categorical` | Discrete categories | Yes | COUNT |
 | `timestamp` | Time values | No | Time columns only |
 | `text` | Free-form text | No | Not directly usable |
 | `id` | Unique identifiers | No | PK/FK columns |
@@ -318,7 +318,7 @@ When two tables share multiple possible FK relationships, ask the user which rel
 | Stype | Valid Aggregations | Can Be Target? |
 |-------|-------------------|----------------|
 | `numerical` | SUM, AVG, MIN, MAX, COUNT | Yes |
-| `categorical` | COUNT, MODE | Yes |
+| `categorical` | COUNT | Yes |
 | `timestamp` | None (used for temporal ordering) | No |
 | `text` | None | No |
 | `id` | None (used for PK/FK matching) | No |
