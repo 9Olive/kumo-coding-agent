@@ -86,9 +86,8 @@ The SDK gives explicit control over every table, column, and edge.
 ```python
 import kumoai
 
-source = kumoai.SnowflakeSourceTable(
-    database="DB", schema="SCH", table="ORDERS", warehouse="WH",
-)
+connector = kumoai.SnowflakeConnector.get_by_name("my_snowflake")
+source = connector.table("ORDERS")
 table = kumoai.Table.from_source_table(source_table=source, primary_key="ORDER_ID")
 table.infer_metadata()
 
