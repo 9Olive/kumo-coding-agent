@@ -97,7 +97,7 @@ expressions may be dropped.
 For finer control over database/schema per table:
 
 ```python
-from kumoai.experimental.rfm.backend.snow import SnowTable
+from kumoai.rfm.backend.snow import SnowTable
 
 graph = rfm.Graph(
     tables=[
