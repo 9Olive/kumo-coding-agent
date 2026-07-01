@@ -250,7 +250,7 @@ PREDICT ... FOR EACH users.user_id WHERE users.name IN ('Smith', 'Johnson')
 
 | Error | Cause | Fix |
 |-------|-------|-----|
-| `String literal must use single quotes` | Double quotes used for strings | Replace `"value"` with `'value'` |
+| N/A | Both single and double quotes are valid string delimiters | No fix needed -- PQL accepts `'value'` and `"value"` equally |
 | `Unterminated string literal` | Missing closing quote | Add the closing `'` |
 | `Invalid number format` | Malformed numeric literal | Use valid integer or decimal format |
 | `Empty IN list` | `IN ()` with no values | Provide at least one value in the IN list |
@@ -364,7 +364,7 @@ Before submitting a PQL query, verify each item:
 - [ ] `WHERE` conditions reference columns from the **entity table** only
 - [ ] Filtered aggregation `WHERE` references columns from the **aggregation table** only
 - [ ] `ASSUMING` is only used with **aggregation targets**, not static column predictions
-- [ ] String literals use **single quotes** (`'value'`, not `"value"`)
+- [ ] String literals may use either quote style (`'value'` or `"value"`)
 - [ ] No unsupported operations: `ORDER BY`, `LIMIT`, `GROUP BY`, subqueries
 - [ ] If using RFM: no `COUNT_DISTINCT`, `FIRST`, `LAST`, `LIKE`, `CONTAINS`
 - [ ] No nested aggregations
