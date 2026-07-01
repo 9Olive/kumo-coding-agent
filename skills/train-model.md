@@ -7,7 +7,7 @@ Train a GNN model on historical relational data using the Kumo SDK for maximum p
 ## Prerequisites
 
 - `kumoai` installed (`uv add kumoai` — see `context/platform/data-connectors.md` for full setup)
-- API credentials set: `KUMO_API_URL`, `KUMO_API_KEY` (or pass to `kumoai.init()`)
+- API credentials set: `KUMO_API_ENDPOINT`, `KUMO_API_KEY` (or pass to `kumoai.init()`)
 - A validated graph (follow `skills/build-graph.md` first)
 - A validated PQL query (follow `skills/write-pql.md` first)
 - **Read first**: `context/platform/sdk-overview.md`
