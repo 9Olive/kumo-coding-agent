@@ -10,7 +10,7 @@ session or as part of a scheduled DAG — using the Kumo fine-tuned SDK.
 - Completed training job (follow `skills/train-model.md`)
 - Training job ID saved to `scratch/` (e.g., `trainingjob-abc123...`) or passed as context otherwise.
 - `kumoai` installed (`uv add kumoai` — see `context/platform/data-connectors.md` for full setup)
-- API credentials set: `KUMO_API_URL`, `KUMO_API_KEY` (or pass to `kumoai.init()`)
+- API credentials set: `KUMO_API_ENDPOINT`, `KUMO_API_KEY` (or pass to `kumoai.init()`)
 - **Read first**: `context/platform/sdk-overview.md`
 
 ---
@@ -255,7 +255,7 @@ jobs:
             --numworkers 8
         env:
           KUMO_API_KEY: ${{ secrets.KUMO_API_KEY }}
-          KUMO_API_URL: ${{ secrets.KUMO_API_URL }}
+          KUMO_API_ENDPOINT: ${{ secrets.KUMO_API_ENDPOINT }}
 ```
 
 #### Pattern B — Async submit + status poller
