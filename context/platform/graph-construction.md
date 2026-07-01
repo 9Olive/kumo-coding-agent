@@ -64,7 +64,7 @@ graph = rfm.Graph.from_sqlite(
 ### Manual Construction
 
 ```python
-from kumoai.experimental.rfm.backend.snow import SnowTable
+from kumoai.rfm.backend.snow import SnowTable
 
 tables = [
     SnowTable(conn, name="USERS", database="DB", schema="SCH"),
