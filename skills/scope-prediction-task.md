@@ -48,6 +48,7 @@ Map the clarified question to a PQL task family:
 | **Temporal count** | `PREDICT COUNT(events.*, 0, N, days)` | "How many orders will customer X place next quarter?" |
 | **Static classification** | `PREDICT table.category_column` | "What tier will this customer fall into?" |
 | **Static regression** | `PREDICT table.numeric_column` | "What is this property's value?" |
+| **Link prediction** | `PREDICT LIST_DISTINCT(col, 0, N, days) FOR EACH entity.pk` | "Which products will customer X buy next?" |
 
 **Decision tree:**
 
@@ -182,7 +183,6 @@ Does this match your intent? Should I adjust the time window or target?
 | "Segment customers into groups" | No unsupervised clustering | Predict a metric, then segment by score in SQL |
 | "Detect anomalies" | No anomaly detection target | Predict amount, flag outliers (actual vs predicted) in SQL |
 | "When will this happen?" | Cannot predict timestamps | Predict probability across windows (7d, 30d, 90d) to bracket timing |
-| "Recommend top products" | Supported — use link prediction | `PREDICT LIST_DISTINCT(orders.product_id, 0, 30, days) FOR EACH users.user_id` |
 | "Count unique products they'll buy" | COUNT_DISTINCT not in RFM_SDK_V2 | Use COUNT for total purchases |
 
 ---
