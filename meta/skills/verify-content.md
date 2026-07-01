@@ -42,7 +42,7 @@ For each claim type, consult the correct source. Do not trust other documentatio
 | TimeUnit values | `kumoapi/typing.py` (`TimeUnit` enum) | `grep -r "class TimeUnit" <kumoapi package path>` |
 | AggregationType values | `kumoapi/typing.py` (`AggregationType` enum) | `grep -r "class AggregationType" <kumoapi package path>` |
 | SDK API signatures | `kumoai` package source | `grep -r "def predict\|def evaluate\|def fit" <kumoai package path>` |
-| RFM API signatures | `kumoai/experimental/rfm/` | Read the module directly |
+| RFM API signatures | `kumoai/rfm/` | Read the module directly |
 | Column types (Dtype/Stype) | `kumoapi/typing.py` | `grep -r "class Dtype\|class Stype" <kumoapi package path>` |
 
 **Finding installed package paths:**
