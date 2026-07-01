@@ -21,7 +21,7 @@ Import the RFM module and authenticate against the KumoRFM service.
 
 ```python
 import kumoai
-import kumoai.experimental.rfm as rfm
+import kumoai.rfm as rfm
 
 # Check SDK version (requires kumoai >= 2.16.3)
 print(f"kumoai version: {kumoai.__version__}")
@@ -144,7 +144,7 @@ graph = rfm.Graph.from_snowflake_semantic_view(
 Use when you need to cherry-pick tables or override inferred metadata.
 
 ```python
-from kumoai.experimental.rfm.backend.snow import SnowTable
+from kumoai.rfm.backend.snow import SnowTable
 
 users_table = SnowTable(
     conn, name="USERS", database="MY_DB", schema="MY_SCHEMA"

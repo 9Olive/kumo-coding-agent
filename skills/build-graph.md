@@ -32,7 +32,7 @@ Select the right approach based on your data source and use case:
 **RFM path -- local DataFrames:**
 
 ```python
-import kumoai.experimental.rfm as rfm
+import kumoai.rfm as rfm
 
 graph = rfm.Graph.from_data({
     "users": users_df,

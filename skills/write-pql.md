@@ -157,7 +157,7 @@ Choose the validation method that matches your environment.
 **In the RFM SDK (Python):**
 
 ```python
-import kumoai.experimental.rfm as rfm
+import kumoai.rfm as rfm
 
 model = rfm.KumoRFM(graph)
 # predict() will validate the query before execution.
