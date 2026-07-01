@@ -302,6 +302,31 @@ training_table.label_distribution()
 training_table.data_df()  # Load the full table into memory as a pandas DataFrame
 ```
 
+### Export and update
+
+Export the training table to add a custom weight column, then re-attach the modified table with `update()`:
+
+```python
+from kumoai.artifact_export import TrainingTableExportConfig
+
+export_result = training_table.export(
+    output_config=TrainingTableExportConfig(
+        output_types={"training_table"},
+        output_connector=my_connector,
+        output_table_name="my_training_table_export",
+    ),
+    non_blocking=False,
+)
+
+# After modifying the exported table externally (e.g. adding a weight
+# column), re-attach it as the training table used for training:
+training_table.update(
+    source_table=modified_source_table,
+    train_table_mod=train_table_mod_spec,
+    validate=True,
+)
+```
+
 ---
 
 ## Model Training
@@ -629,6 +654,8 @@ endpoint.destroy()                         # Tear down endpoint
 | `PredictiveQuery` | `.suggest_model_plan()` | Plan model configuration |
 | `PredictiveQuery` | `.generate_training_table(plan)` | Generate training data |
 | `PredictiveQuery` | `.generate_prediction_table(plan)` | Generate prediction data |
+| `TrainingTable` | `.export(output_config)` | Export the training table for external modification |
+| `TrainingTable` | `.update(source_table, train_table_mod)` | Re-attach a modified training table |
 | `Trainer` | `.fit(graph, train_table)` | Train model |
 | `Trainer` | `.predict(graph, pred_table)` | Run batch predictions |
 | `TrainingTable` | `.data_df()` | Load training data into memory as a DataFrame |
