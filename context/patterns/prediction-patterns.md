@@ -293,7 +293,7 @@ When a prediction type is not supported by PQL:
 | **Multi-hop prediction** ("Predict revenue for a region") | PQL predicts per-entity only | Pattern 3: predict per entity, aggregate with SQL |
 | **RANK syntax** | Not a PQL keyword | SQL `ORDER BY` + `LIMIT` on PQL results |
 | **Temporal ordering** ("In which month will X happen?") | PQL predicts aggregates, not event timing | Consecutive windows (Pattern 10) |
-| **COUNT_DISTINCT** | Not supported in PQL | Use `COUNT` or handle in SQL |
+| **COUNT_DISTINCT** | Blocked in RFM mode (fine-tuned only) | Use .COUNT., handle in SQL, or switch to fine-tuned |
 | **Timestamp predictions** | PQL cannot predict a date/time value | Predict binary outcome over a window |
 | **String pattern matching** | No LIKE/REGEX in PQL | Filter with SQL first (Pattern 7) |
 | **Nested aggregations** | One aggregation level only | Break into multiple SQL+PQL steps |
