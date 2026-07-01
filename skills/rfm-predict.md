@@ -267,7 +267,7 @@ write the query string.
 **Pre-flight checks before running:**
 
 - [ ] Aggregation column exists in the target table
-- [ ] Time window values are non-negative integers
+- [ ] `end` must be positive (extend into the future); `start` may be negative or `-INF`
 - [ ] FOR EACH column is a primary key of an entity table
 - [ ] Foreign-key path from entity to target is exactly 1 hop
 - [ ] No nested aggregations (e.g., `SUM(COUNT(...))` is invalid)
@@ -552,8 +552,9 @@ with open("scratch/graph_ecom.pkl", "wb") as f:
 - [ ] Schema inspected directly (DataFrames, not just `print_metadata()`)
 - [ ] `graph.validate()` passes without errors
 - [ ] PQL query uses real table/column names from the data
-- [ ] Pre-flight checks passed (no nested aggs, 1-hop FK, non-negative window)
+- [ ] Pre-flight checks passed (no nested aggs, 1-hop FK, end positive (start may be negative))
 - [ ] `indices` passed to `model.predict()` for `FOR EACH` queries
 - [ ] Prediction executed and output shape inspected
 - [ ] Evaluation: quick check via `model.evaluate()` AND/OR held-out via saved test IDs
 - [ ] Results saved to `scratch/` for reproducibility
+
