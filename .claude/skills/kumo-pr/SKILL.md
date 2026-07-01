@@ -56,7 +56,7 @@ git checkout -b kumo-coding-agent/<slug>
 # WORK_DIR = current directory
 ```
 
-**If NO** (e.g., running from a project that used kumo-import):
+**If NO** (e.g., running from a project that installed the skills via `npx skills add`):
 ```bash
 WORK_DIR=$(mktemp -d)
 git clone --filter=blob:none --depth=1 \

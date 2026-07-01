@@ -4,7 +4,6 @@ Slash commands available when working in this repo with Claude Code or Codex.
 
 | Command | Purpose |
 |---------|---------|
-| `/kumo-import` | Download kumo-coding-agent from GitHub into your project |
 | `/kumo-issue [description]` | Report a gap, bug, or feature request |
 | `/kumo-pr [description]` | Fix a skill/doc and open a PR |
 
