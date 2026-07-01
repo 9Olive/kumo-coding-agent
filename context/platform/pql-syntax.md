@@ -87,10 +87,9 @@ AGGREGATION(table.column)                          -- static aggregation (no tim
 | `(0, 3, months)` | Next 3 months |
 
 **Important rules:**
+- `start` must be non-negative (`>= 0`); PREDICT targets and ASSUMING clauses cannot look into the past at all, and the validator rejects any target/whatif aggregation with a negative `start` (including `-INF`) with the error: cannot have an aggregation in the past, both start and end need to be non negative.
 - `start` must be less than `end`
-- The `end` value must be positive (i.e., extend into the future)
-- Use `-INF` or `-INFINITY` for unbounded past windows
-- Past-only windows (both start and end negative) are **not supported**
+- `-INF` / `-INFINITY` is only usable inside nested filter conditions (e.g. a `WHERE` clause inside an aggregation filter), never as the top-level target or `ASSUMING` time range
 
 **Examples:**
 
