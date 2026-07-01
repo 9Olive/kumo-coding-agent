@@ -50,6 +50,8 @@ Map the clarified question to a PQL task family:
 | **Static regression** | `PREDICT table.numeric_column` | "What is this property's value?" |
 | **Link prediction** | `PREDICT LIST_DISTINCT(col, 0, N, days) FOR EACH entity.pk` | "Which products will customer X buy next?" |
 
+> **Note:** Link prediction (`LIST_DISTINCT` targeting a foreign-key column) is not supported when predicting with KumoRFM in `RFM_SDK_V2` mode (see `skills/rfm-predict.md`). It is only available when training a dedicated model (see `skills/train-model.md`).
+
 **Decision tree:**
 
 ```
