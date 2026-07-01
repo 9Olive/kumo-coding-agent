@@ -289,7 +289,6 @@ When a prediction type is not supported by PQL:
 
 | Scenario | Why Unsupported | Alternative |
 |----------|----------------|-------------|
-| **Link prediction** ("Will X buy product Y?") | Blocked in RFM mode (fine-tuned only) | Use LIST_DISTINCT(fk_col) + RANK TOP k when training a dedicated model |
 | **Multi-hop prediction** ("Predict revenue for a region") | PQL predicts per-entity only | Pattern 3: predict per entity, aggregate with SQL |
 | **RANK syntax** | Not a PQL keyword | SQL `ORDER BY` + `LIMIT` on PQL results |
 | **Temporal ordering** ("In which month will X happen?") | PQL predicts aggregates, not event timing | Consecutive windows (Pattern 10) |
