@@ -120,6 +120,20 @@ Where `<type>` is one of: `fix`, `docs`, `feat`, `refactor`.
 git push -u origin kumo-coding-agent/<slug>
 ```
 
+**If the push fails with a permission error** (most contributors do not have
+direct push access to kumo-ai/kumo-coding-agent - fork the repo and push
+there instead):
+
+```bash
+gh_user=$(gh api user --jq ".login")
+gh repo fork kumo-ai/kumo-coding-agent --remote=false 2>/dev/null || true
+git remote set-url origin "https://github.com/$gh_user/kumo-coding-agent.git"
+git push -u origin kumo-coding-agent/<slug>
+```
+
+If you pushed to a fork above, use `--head <fork-owner>:kumo-coding-agent/<slug>`
+in the `gh pr create` command below instead of the plain branch name.
+
 Create the PR — always pass `--head` and `--base` explicitly so this works
 regardless of which directory the command runs from:
 
