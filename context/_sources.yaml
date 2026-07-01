@@ -22,8 +22,8 @@ platform/rfm-overview.md:
   source_repo: kumo-sdk
   version: "2.16.3"
   source_files:
-    - kumoai/experimental/rfm/rfm.py
-    - kumoai/experimental/rfm/graph.py
+    - kumoai/rfm/rfm.py
+    - kumoai/rfm/graph.py
   last_sync: "2026-03-31"
 
 platform/sdk-overview.md:
@@ -42,7 +42,7 @@ platform/graph-construction.md:
   version: "2.16.3"
   source_files:
     - kumoai/graph/graph.py
-    - kumoai/experimental/rfm/graph.py
+    - kumoai/rfm/graph.py
   last_sync: "2026-03-31"
 
 platform/data-connectors.md:
