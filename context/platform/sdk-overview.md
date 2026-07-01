@@ -300,6 +300,31 @@ training_table.stats()
 training_table.label_distribution()
 ```
 
+### Export and update
+
+Export the training table to add a custom weight column, then re-attach the modified table with `update()`:
+
+```python
+from kumoai.artifact_export import TrainingTableExportConfig
+
+export_result = training_table.export(
+    output_config=TrainingTableExportConfig(
+        output_types={"training_table"},
+        output_connector=my_connector,
+        output_table_name="my_training_table_export",
+    ),
+    non_blocking=False,
+)
+
+# After modifying the exported table externally (e.g. adding a weight
+# column), re-attach it as the training table used for training:
+training_table.update(
+    source_table=modified_source_table,
+    train_table_mod=train_table_mod_spec,
+    validate=True,
+)
+```
+
 ---
 
 ## Model Training
