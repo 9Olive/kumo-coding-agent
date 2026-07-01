@@ -50,7 +50,7 @@ questions:
     category: prediction
     difficulty: basic
     question: "What run_mode options are available for KumoRFM predictions?"
-    expected_answer: "Four modes: \"debug\" (fastest, testing only), \"fast\" (~4x faster than normal, default for experimentation), \"normal\" (balanced), and \"best\" (~4x slower than normal, highest quality for production). RFM accepts these as strings, e.g., run_mode=\"fast\"."
+    expected_answer: "Three modes: \"fast\" (~1,000 in-context examples; default, best for prototyping/iteration), \"normal\" (~5,000; balanced), and \"best\" (~10,000; maximum accuracy for production). There is no \"debug\" mode. RFM accepts these as strings, e.g., run_mode=\"fast\"."
     grading: factual
 
   - id: rfm-006
