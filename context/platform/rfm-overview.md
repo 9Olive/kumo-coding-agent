@@ -54,7 +54,7 @@ for the full catalog.
 
 ## Graph Construction
 
-There are four paths to build an RFM graph. Every path produces the same
+There are six paths to build an RFM graph. Every path produces the same
 `rfm.Graph` object.
 
 ### Path 1 -- Local pandas DataFrames
@@ -92,7 +92,27 @@ graph = rfm.Graph.from_snowflake_semantic_view(
 Caveats: composite primary keys not fully supported; some cross-table
 expressions may be dropped.
 
-### Path 4 -- Manual SnowTable construction
+### Path 4 -- DuckDB database
+
+```python
+graph = rfm.Graph.from_duckdb(
+    "data.duckdb",
+    tables=["USERS", "ORDERS", "ITEMS"],
+)
+```
+
+### Path 5 -- Databricks tables
+
+```python
+graph = rfm.Graph.from_databricks(
+    connection=connection,
+    catalog="MY_CATALOG",
+    schema="MY_SCHEMA",
+    tables=["USERS", "ORDERS", "ITEMS"],
+)
+```
+
+### Path 6 -- Manual SnowTable construction
 
 For finer control over database/schema per table:
 
@@ -535,6 +555,8 @@ pred_df = model.predict("PREDICT context.target=1 FOR EACH context.index")
 | `rfm.ExplainConfig()` | `skip_summary=False` | Config object |
 | `rfm.Graph.from_data(dfs)` | `infer_metadata=True`, `verbose=True` | `Graph` |
 | `rfm.Graph.from_sqlite(connection)` | `tables`, `edges`, `infer_metadata` | `Graph` |
+| `rfm.Graph.from_duckdb(connection)` | `tables`, `edges`, `infer_metadata` | `Graph` |
+| `rfm.Graph.from_databricks(connection)` | `tables`, `catalog`, `schema`, `edges`, `infer_metadata` | `Graph` |
 | `rfm.Graph(tables, edges)` | — | `Graph` |
 | `graph.link(src, fkey, dst)` | — | `self` |
 | `graph.infer_links()` | `verbose=True` | `self` |
