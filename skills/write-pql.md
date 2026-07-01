@@ -97,8 +97,8 @@ FOR EACH <entity_table>.<primary_key>
 
 **Time window semantics:**
 
-- `(table.col, start, end, unit)` — offsets from anchor time into future.
-- Both must be non-negative integers, with `start < end`.
+- `(table.col, start, end, unit)` — `start` may be negative (or `-INF`) to reach into the past; `end` must be positive (extend into the future).
+- Both must satisfy `start < end`.
 - Units: `days`, `hours`, `minutes`, `months` (no `weeks`, `seconds`, or `years` — see PQL grammar).
 
 **WHERE clause (entity filter)** — filters which entities get scored:
@@ -126,8 +126,8 @@ PREDICT SUM(orders.amount, 0, 30, days) WHERE orders.category = 'electronics' FO
 Run through every constraint before executing. A single violation will
 cause the query to fail.
 
-- [ ] **Time window non-negative** — Both `start` and `end` are >= 0, and
-  `start` < `end`.
+- [ ] **Time window valid** — `end` is positive (extends into the future);
+  `start` may be negative or `-INF` for past-inclusive windows; `start` < `end`.
 - [ ] **Aggregation matches column type** — `SUM`/`AVG`/`MIN`/`MAX` on
   numeric columns only. `COUNT` on any column.
 - [ ] **ASSUMING uses temporal aggregation** — The ASSUMING clause must
@@ -244,7 +244,7 @@ FOR EACH entity_table.primary_key
 | `multi-hop FK path` | Entity and target separated by 2+ joins | Flatten with SQL join or restructure graph |
 | `invalid aggregation for column type` | `SUM`/`AVG` on non-numeric column | Switch to `COUNT` or use a numeric column |
 | `nested aggregation` | `SUM(COUNT(...))` or similar nesting | Rewrite as a single aggregation level |
-| `start >= end in time window` | Time window bounds inverted or equal | Ensure `start < end`, both non-negative |
+| `start >= end in time window` | Time window bounds inverted, equal, or `end` not positive | Ensure `start < end` and `end` is positive (`start` may be negative) |
 | `FOR EACH column is not a primary key` | Predicting for a non-PK column | Use the actual PK of the entity table |
 | `ASSUMING requires temporal aggregation` | Static column in ASSUMING clause | Wrap in temporal aggregation with non-negative window |
 | `unsupported time unit` | Typo in unit (e.g., `day` instead of `days`) | Use: `days`, `hours`, `minutes`, `months` |
