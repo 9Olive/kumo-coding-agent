@@ -18,7 +18,7 @@
 |---|---|---|
 | Will this transaction be flagged as fraud? | `PREDICT COUNT(fraud_alerts.*, 0, ?, days) > 0 FOR EACH accounts.account_id` | TODO: validate time window |
 | How many chargebacks in the next N days? | `PREDICT COUNT(chargebacks.*, 0, ?, days) FOR EACH accounts.account_id` | TODO: determine typical window |
-| What is the expected fraud loss amount? | `PREDICT SUM(transactions.amount, 0, ?, days) WHERE transactions.is_fraud = 1 FOR EACH accounts.account_id` | TODO: verify filter-inside-agg syntax |
+| What is the expected fraud loss amount? | `PREDICT SUM(transactions.amount WHERE transactions.is_fraud = 1, 0, ?, days) FOR EACH accounts.account_id` | TODO: verify filter-inside-agg syntax |
 
 ---
 
