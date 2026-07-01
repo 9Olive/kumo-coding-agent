@@ -30,7 +30,7 @@ import kumoai
 kumoai.init(url="https://app.kumo.ai", api_key="YOUR_API_KEY")
 
 # Option B: environment variables
-#   KUMO_API_URL, KUMO_API_KEY
+#   KUMO_API_ENDPOINT, KUMO_API_KEY
 kumoai.init()
 ```
 
@@ -40,7 +40,7 @@ overwrites the previous connection.
 Environment variables:
 | Variable | Purpose |
 |----------|---------|
-| `KUMO_API_URL` | API endpoint URL |
+| `KUMO_API_ENDPOINT` | API endpoint URL |
 | `KUMO_API_KEY` | Authentication token |
 
 ---
