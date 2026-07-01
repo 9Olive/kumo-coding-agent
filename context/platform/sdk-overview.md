@@ -79,12 +79,10 @@ connector = kumoai.SnowflakeConnector.get_by_name("my_snowflake")
 ### SourceTable inspection
 
 ```python
-source = connector.source_table("TABLE_NAME")
-source.column_names()
-source.column_types()
-source.head(n=5)
-source.count()
-source.schema()
+source = connector.table("TABLE_NAME")
+source.column_dict      # {name: SourceColumn} with dtype/stype info
+source.columns          # list of SourceColumn metadata
+source.head(num_rows=5) # sample rows as a DataFrame
 ```
 
 ---
