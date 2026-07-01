@@ -77,7 +77,7 @@ questions:
     category: unsupported
     difficulty: intermediate
     question: "A user asks 'Recommend the top 5 products for customer C123.' Can this be done with PQL in RFM_SDK_V2 mode?"
-    expected_answer: "Partially. LIST_DISTINCT-based link prediction is supported in RFM: PREDICT LIST_DISTINCT(orders.product_id, 0, 30, days) FOR EACH customers.customer_id. However, RANK TOP K ranking of results is fine-tuned only, so RFM cannot return a strict top-5 list. Alternatives for precise top-K ranking: switch to fine-tuned, or predict per-category purchase probability and sort with SQL."
+    expected_answer: "No. In RFM_SDK_V2 mode, link prediction (a LIST_DISTINCT aggregation over a foreign key such as orders.product_id) is explicitly blocked — the validator rejects it with 'Link prediction queries are not yet supported by this version of KumoRFM. To make link predictions, contact Kumo for an enterprise plan.' Producing a top-5 product recommendation requires the fine-tuned SDK or an enterprise plan. Alternatives in RFM_SDK_V2: predict per-category purchase probability, or predict total spend."
     grading: semantic
 
   # --- Filters ---
