@@ -97,7 +97,7 @@ AGGREGATION(table.column)                          -- static aggregation (no tim
 PREDICT SUM(orders.amount, 0, 30, days) FOR EACH users.user_id
 PREDICT COUNT(claims.*, 0, 90, days) FOR EACH policies.policy_id
 PREDICT AVG(transactions.amount, 0, 7, days) FOR EACH accounts.account_id
-PREDICT MAX(orders.amount, -INF, 30, days) FOR EACH users.user_id
+PREDICT MAX(orders.amount, 0, 90, days) FOR EACH users.user_id
 ```
 
 ### Filtered Aggregations
