@@ -9,7 +9,7 @@ on relational data using KumoRFM. RFM (Relational Foundation Model) lets you
 express a prediction task in PQL (Predictive Query Language), point it at a
 relational graph, and get results without any model training.
 
-**Package**: `kumoai.experimental.rfm` (requires `kumoai>=2.16.3`)
+**Package**: `kumoai.rfm` (requires `kumoai>=2.16.3`)
 
 Typical workflow:
 1. Build a `Graph` from local DataFrames, Snowflake tables, or a Semantic View.
@@ -60,7 +60,7 @@ There are four paths to build an RFM graph. Every path produces the same
 ### Path 1 -- Local pandas DataFrames
 
 ```python
-import kumoai.experimental.rfm as rfm
+import kumoai.rfm as rfm
 
 graph = rfm.Graph.from_data({
     "users": users_df,
@@ -97,7 +97,7 @@ expressions may be dropped.
 For finer control over database/schema per table:
 
 ```python
-from kumoai.experimental.rfm.backend.snow import SnowTable
+from kumoai.rfm.backend.snow import SnowTable
 
 graph = rfm.Graph(
     tables=[
