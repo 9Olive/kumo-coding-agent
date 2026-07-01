@@ -250,7 +250,6 @@ PREDICT ... FOR EACH users.user_id WHERE users.name IN ('Smith', 'Johnson')
 
 | Error | Cause | Fix |
 |-------|-------|-----|
-| N/A | Both single and double quotes are valid string delimiters | No fix needed -- PQL accepts `'value'` and `"value"` equally |
 | `Unterminated string literal` | Missing closing quote | Add the closing `'` |
 | `Invalid number format` | Malformed numeric literal | Use valid integer or decimal format |
 | `Empty IN list` | `IN ()` with no values | Provide at least one value in the IN list |
