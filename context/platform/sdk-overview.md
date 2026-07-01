@@ -298,6 +298,7 @@ training_table.head(n=10)
 training_table.count()
 training_table.stats()
 training_table.label_distribution()
+training_table.data_df()  # Load the full table into memory as a pandas DataFrame
 ```
 
 ---
@@ -627,6 +628,7 @@ endpoint.destroy()                         # Tear down endpoint
 | `PredictiveQuery` | `.generate_prediction_table(plan)` | Generate prediction data |
 | `Trainer` | `.fit(graph, train_table)` | Train model |
 | `Trainer` | `.predict(graph, pred_table)` | Run batch predictions |
+| `TrainingTable` | `.data_df()` | Load training data into memory as a DataFrame |
 | `TrainingJobResult` | `.metrics()` | Evaluation results |
 | `TrainingJobResult` | `.model_plan` | Actual ModelPlan after AutoML |
 | `TrainingJobResult` | `.holdout_df()` | Holdout split as DataFrame (ENTITY, TARGET, TARGET_PRED) |
