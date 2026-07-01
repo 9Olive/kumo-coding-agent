@@ -469,6 +469,7 @@ pred_plan.forecast_length = 12     # For forecasting tasks
 pred_plan.lag_timesteps = 7        # Autoregressive lag features
 
 pred_table = pq.generate_prediction_table(pred_plan, non_blocking=False)
+pred_table.anchor_time   # Read back the anchor time used. A property, returns None for custom or path-specified tables.
 ```
 
 ### Batch Prediction
@@ -634,6 +635,8 @@ endpoint.destroy()                         # Tear down endpoint
 | `TrainingJob` | `.progress()` | Per-epoch training metrics |
 | `TrainingJob` | `.attach()` | Block with live progress bar |
 | `TrainingJob` | `.cancel()` | Cancel in-progress job |
+| `PredictionTable` | `.anchor_time` | Anchor time used for generation - a property; None if custom/path-specified |
+| `BaselineJobResult` | `.metrics()` | Evaluation metrics vs. baseline models |
 | `BatchPredictionResult` | `.summary()` | Prediction count |
 | `BatchPredictionResult` | `.predictions_urls()` | Parquet URLs |
 | `BatchPredictionResult` | `.embeddings_df()` | Entity embeddings |
