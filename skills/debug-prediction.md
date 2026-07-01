@@ -118,7 +118,6 @@ If you need to predict across `users -> orders -> products` (2 hops), break it i
 | `FIRST` / `LAST` | Blocked in RFM mode (fine-tuned only). Use SQL to extract first/last values for RFM. |
 | `LIKE` / `CONTAINS` | Use SQL WHERE with LIKE, then pass filtered entity list via `entity_sql` |
 | Nested aggregations | `PREDICT AVG(SUM(...))` is invalid. Break into two queries. |
-| Link prediction | Blocked in RFM mode (fine-tuned only). Use `LIST_DISTINCT(fk_col)` + `RANK TOP k` when training a dedicated model. |
 | Static column in ASSUMING | `ASSUMING` only works with temporal aggregations |
 | `GROUP BY` in PQL | PQL does not support GROUP BY. Use `FOR EACH` for entity grouping. |
 | `ORDER BY` / `LIMIT` in PQL | Not supported. Apply ordering/limits in post-processing SQL. |
