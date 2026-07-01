@@ -26,7 +26,7 @@ questions:
     category: aggregations
     difficulty: basic
     question: "What PQL aggregation functions are supported?"
-    expected_answer: "SUM, AVG, MIN, MAX, COUNT. SUM/AVG/MIN/MAX require numerical columns. COUNT works on any column or table.*."
+    expected_answer: "SUM, AVG, MIN, MAX, COUNT, LIST_DISTINCT are supported in both RFM and fine-tuned modes. COUNT_DISTINCT, FIRST, and LAST are fine-tuned only (blocked in RFM). SUM/AVG/MIN/MAX require numerical columns; COUNT works on any column or table.*."
     grading: factual
 
   - id: pql-005
@@ -70,14 +70,14 @@ questions:
     category: unsupported
     difficulty: basic
     question: "Can PQL predict the number of unique products a customer will buy?"
-    expected_answer: "No. COUNT_DISTINCT is not supported in PQL. Use COUNT for total purchases (including repeats), or use SQL for historical distinct counts."
+    expected_answer: "Not in RFM mode - COUNT_DISTINCT is blocked in RFM (fine-tuned only). In RFM, use COUNT for total purchases (including repeats), or use SQL for historical distinct counts. In fine-tuned mode, COUNT_DISTINCT is supported directly."
     grading: semantic
 
   - id: pql-010
     category: unsupported
     difficulty: intermediate
     question: "A user asks 'Recommend the top 5 products for customer C123.' Can this be done with PQL in RFM_SDK_V2 mode?"
-    expected_answer: "No. Link prediction and LIST_DISTINCT are not supported in RFM_SDK_V2. Alternatives: predict purchase probability per category, predict total spend, or predict whether the customer will buy from specific categories."
+    expected_answer: "Partially. LIST_DISTINCT-based link prediction is supported in RFM: PREDICT LIST_DISTINCT(orders.product_id, 0, 30, days) FOR EACH customers.customer_id. However, RANK TOP K ranking of results is fine-tuned only, so RFM cannot return a strict top-5 list. Alternatives for precise top-K ranking: switch to fine-tuned, or predict per-category purchase probability and sort with SQL."
     grading: semantic
 
   # --- Filters ---
