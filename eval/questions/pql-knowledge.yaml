@@ -41,7 +41,7 @@ questions:
     category: time_windows
     difficulty: basic
     question: "Are negative time windows (e.g., -30 to 0 days) supported in PQL?"
-    expected_answer: "No. In RFM_SDK_V2 mode, start time must be >= 0. Use (0, N, days) for future predictions. For historical analysis, use SQL instead."
+    expected_answer: "Partially. A window may start in the past (start negative or -INF, e.g. (-7, 30, days) or (-INF, 30, days)) as long as end is positive - this covers past-to-future windows. Purely past-only windows (both start and end negative) are not supported; use SQL for historical-only analysis."
     grading: factual
 
   - id: pql-007
