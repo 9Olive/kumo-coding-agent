@@ -80,14 +80,14 @@ All parts are required: `PREDICT`, aggregation with fully qualified column, time
 
 | Sub-Issue | Diagnosis | Fix |
 |-----------|-----------|-----|
-| Negative start time | `PREDICT SUM(orders.amount, -30, 0, days)` | Start time must be >= 0. Use `(0, 30, days)` for future window. |
+| Non-positive end time | `PREDICT SUM(orders.amount, -30, 0, days)` | `end` must be positive (extend into the future). Use `(-30, 30, days)` for a past-to-future window, or `(0, 30, days)` for future-only; `start` may be negative. |
 | Start >= End | `PREDICT SUM(orders.amount, 30, 10, days)` | Start must be strictly less than end |
 | Missing time column | Target table has no timestamp column | Add a time column to the table, or use a different target table |
 | Missing time range on temporal table | `PREDICT SUM(orders.amount) FOR EACH ...` | Temporal tables require time range: `(start, end, unit)` |
 | Static aggregation on temporal data | Aggregation without time range on a table that has a time column | Either add time range or confirm the column is truly static |
 | Wrong anchor_time | `anchor_time` is in the future or misformatted | Use ISO 8601 format. Anchor time should be at or before current time. |
 
-**Action:** Ensure time ranges are non-negative, start < end, and the target table has a valid time column.
+**Action:** Ensure `end` is positive, `start < end` (`start` may be negative or `-INF` for past-inclusive windows), and the target table has a valid time column.
 
 ### Branch 5: Is It a Relationship Error?
 
@@ -170,7 +170,7 @@ test_sql = "SELECT 'KNOWN_GOOD_ID' AS USER_ID"
 | `table 'X' not found` | Misspelled table name | Check `print_metadata()` for exact names |
 | `column 'X' not found in table 'Y'` | Wrong column name or wrong table | Verify with `column_dict` or `EXPLAIN_PQL` |
 | `entity column must be a primary key` | FOR EACH uses a non-PK column | Change to the table's actual PK column |
-| `invalid time range` | Start >= end or negative values | Use `(0, N, days)` with 0 <= start < end |
+| `invalid time range` | Start >= end, or `end` not positive | Ensure `end` is positive and `start < end` (`start` may be negative or `-INF`) |
 | `cannot apply SUM to categorical` | Aggregation/stype mismatch | Use COUNT or MODE for categorical columns |
 | `no path between tables` | Missing FK link in graph | Add edge with `graph.link()` or reconstruct graph |
 | `ASSUMING requires temporal aggregation` | Used ASSUMING with a static prediction | Add time range to the aggregation |
@@ -190,7 +190,7 @@ test_sql = "SELECT 'KNOWN_GOOD_ID' AS USER_ID"
 | `ValidationError: column not found` | Reference | Verify column name in table schema |
 | `ValidationError: entity must be primary key` | Reference | Use a PK column in FOR EACH |
 | `ValidationError: incompatible stype for aggregation` | Type | Match aggregation to column stype |
-| `ValidationError: time range invalid` | Time | Ensure 0 <= start < end |
+| `ValidationError: time range invalid` | Time | Ensure `end` is positive and `start < end` (`start` may be negative or `-INF`) |
 | `ValidationError: no path between X and Y` | Relationship | Add missing edge to graph |
 | `ValidationError: ambiguous path` | Relationship | Remove duplicate edges or specify path |
 | `ExecutionError: unsupported operation` | Unsupported | Use SQL workaround |
@@ -227,10 +227,11 @@ If your aggregation is invalid for the column stype, either:
 - [ ] Error message read and categorized (syntax, reference, type, time, relationship, unsupported)
 - [ ] Schema verified (all referenced tables and columns exist in graph)
 - [ ] Column types verified (stype matches the aggregation function used)
-- [ ] Time window is valid (0 <= start < end, correct unit)
+- [ ] Time window is valid (`end` is positive, `start < end`; `start` may be negative or `-INF`, correct unit)
 - [ ] FK path is direct (1-hop between entity table and target table)
 - [ ] Aggregation matches column type (numerical for SUM/AVG/MIN/MAX, any for COUNT)
 - [ ] ASSUMING clause uses temporal aggregation (if present)
 - [ ] Entity column in FOR EACH is a primary key
 - [ ] `entity_sql` returns expected rows (run independently to verify)
 - [ ] Query runs successfully after applying fix
+
