@@ -307,6 +307,7 @@ pred_df = model.predict(
     query="PREDICT SUM(orders.amount, 0, 30, DAYS) FOR users.user_id IN (42, 123)",
     indices=None,
     explain=False,
+    return_embeddings=False,
     anchor_time=None,
     context_anchor_time=None,
     run_mode="fast",
@@ -325,6 +326,7 @@ pred_df = model.predict(
 | `query` | `str` | required | PQL query string |
 | `indices` | `list[str\|int\|float]` | `None` | Entity PKs to predict for. Overrides entities in the query. |
 | `explain` | `bool \| ExplainConfig` | `False` | Enable explainability. **Single entity + FAST mode only.** |
+| `return_embeddings` | `bool` | `False` | Whether to also return the embeddings for each prediction example. |
 | `anchor_time` | `pd.Timestamp \| "entity" \| None` | `None` | Prediction anchor. `None` = latest timestamp in graph. `"entity"` = per-entity timestamp from entity table's time column. |
 | `context_anchor_time` | `pd.Timestamp \| None` | `None` | Max anchor time for in-context learning examples. `None` = derived from `anchor_time`. |
 | `run_mode` | `str` | `"fast"` | `"fast"` (~1K examples), `"normal"` (~5K), `"best"` (~10K). |
