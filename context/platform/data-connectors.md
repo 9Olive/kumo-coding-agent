@@ -43,7 +43,7 @@ uv add mlflow                        # or: uv add wandb
 export KUMO_API_KEY="your-api-key"
 
 # fine-tuned SDK only — set the workspace URL
-export KUMO_API_URL="https://app.kumo.ai"
+export KUMO_API_ENDPOINT="https://app.kumo.ai"
 
 # Snowflake (if using Snowflake connector directly)
 export SNOWFLAKE_ACCOUNT="xy12345.us-east-1"
