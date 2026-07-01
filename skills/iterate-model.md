@@ -234,7 +234,7 @@ result = trainer.fit(graph, train_table, warm_start_job_id="trainingjob-xxx")
 **Note on explainability:** The fine-tuned SDK has no built-in feature importance API. To understand what drives predictions:
 - Run RFM `explain=True` on the same query for feature attributions
 - Analyze `holdout_df()` manually — slice predictions by feature values to find drivers
-- Use `graph.get_table_stats(wait_for="full")` to check column distributions
+- Use `training_table.stats(), .count(), and .label_distribution()` to check column distributions
 
 ### Step 7: Accept or Reframe
 
