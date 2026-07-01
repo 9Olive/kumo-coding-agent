@@ -208,7 +208,7 @@ for a weighted or risk-adjusted ranking.
 SQL combine.
 
 **Critical notes:**
-- Time windows are **right-exclusive**: `(start, end]` — start excluded, end included.
+- Time windows are **left-exclusive**: `(start, end]` — start excluded, end included.
 - Windows must be **non-overlapping and contiguous** to avoid double-counting.
 - All windows share the same **ANCHOR_TIME**.
 
@@ -269,7 +269,7 @@ customer tiers?"
 
 **Reasoning:**
 1. "Weekly" + "next month" = 4 consecutive non-overlapping 7-day windows.
-2. Windows: (0,7], (7,14], (14,21], (21,28] — right-exclusive boundaries.
+2. Windows: (0,7], (7,14], (14,21], (21,28] — left-exclusive boundaries.
 3. All four PQL calls use the same ANCHOR_TIME.
 
 **Steps:**
