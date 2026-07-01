@@ -272,8 +272,10 @@ result = model.predict(
 - Stakeholders need to trust the model before acting
 - Debugging unexpected predictions
 
-**Caveat**: Explainability works best with single-entity predictions in fast
-mode. It adds latency to batch predictions.
+**Caveat**: Explainability only works for single-entity predictions in fast
+mode. It is not supported for batch (multi-entity) predictions; requesting
+explain on a multi-entity query will fail, and NORMAL/BEST run modes
+auto-downgrade to FAST with a warning.
 
 ---
 
