@@ -650,6 +650,8 @@ endpoint.destroy()                         # Tear down endpoint
 | `PredictiveQuery` | `.suggest_model_plan()` | Plan model configuration |
 | `PredictiveQuery` | `.generate_training_table(plan)` | Generate training data |
 | `PredictiveQuery` | `.generate_prediction_table(plan)` | Generate prediction data |
+| `TrainingTable` | `.export(output_config)` | Export the training table for external modification |
+| `TrainingTable` | `.update(source_table, train_table_mod)` | Re-attach a modified training table |
 | `Trainer` | `.fit(graph, train_table)` | Train model |
 | `Trainer` | `.predict(graph, pred_table)` | Run batch predictions |
 | `TrainingJobResult` | `.metrics()` | Evaluation results |
