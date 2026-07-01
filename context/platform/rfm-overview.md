@@ -601,8 +601,8 @@ pred_df = model.predict("PREDICT context.target=1 FOR EACH context.index")
             f"PREDICT SUM(table.col, {day_offset - 1}, {day_offset}, days) "
             f"FOR EACH entity.pk"
         )
-        with rfm.batch_mode(batch_size="max"):
-            pred_df = rfm.predict(query, indices=all_ids, anchor_time=ANCHOR, ...)
+        with model.batch_mode(batch_size="max"):
+            pred_df = model.predict(query, indices=all_ids, anchor_time=ANCHOR, ...)
         pred_df["timeframe"] = day_offset
         parts.append(pred_df)
     all_preds = pd.concat(parts, ignore_index=True)
