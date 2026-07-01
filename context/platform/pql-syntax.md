@@ -257,7 +257,7 @@ PREDICT SUM(orders.amount, 0, 30, days) FOR EACH users.user_id ASSUMING SUM(mark
 | Array | `('US', 'CA', 'UK')` — used only with `IN` |
 
 **Special values:**
-- `-INF` / `-INFINITY` — negative infinity (for unbounded past time windows)
+- `-INF` / `-INFINITY` - negative infinity; only valid inside nested filter conditions, never as a target/ASSUMING window bound
 - `NULL` / `null` — null value
 - `true` / `false` — boolean literals
 
