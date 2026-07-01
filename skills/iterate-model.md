@@ -141,8 +141,8 @@ for window in [7, 14, 30, 60, 90]:
 
 | Issue | Detection | Fix |
 |-------|-----------|-----|
-| **Class imbalance** (99% one class) | `train_table.label_distribution()` | Change task: adjust window, threshold, or definition |
-| **Too few rows** (< 1K entities) | `train_table.count()` | Can't fix with training — use RFM instead |
+| **Class imbalance** (99% one class) | `train_table.data_df()["target_col"].value_counts()` | Change task: adjust window, threshold, or definition |
+| **Too few rows** (< 1K entities) | `len(train_table.data_df())` | Can't fix with training — use RFM instead |
 | **Stale data** (latest record > 60 days ago) | Check `MAX(timestamp)` | Get fresh data or acknowledge predictions may be outdated |
 | **Time gaps** (months of missing data) | Plot event counts by month | Exclude gap period or warn user |
 | **NULL-heavy target** (> 30% NULL in target column) | `df['target'].isnull().mean()` | Choose a different target or filter NULLs |
@@ -305,7 +305,7 @@ Track your experiments in your scratch file:
 | AUC dropped after adding a table | New table adds noise, not signal | Remove it, it's hurting |
 | Training AUC = 0.90, holdout AUC = 0.55 | Overfitting — too little data or data leakage | Check for leaky features, reduce model complexity |
 | Metrics improve with longer window | Short window has too little signal | Use the longer window if business allows |
-| All predictions are the same value | Class imbalance or broken target | Check `label_distribution()` |
+| All predictions are the same value | Class imbalance or broken target | Check `train_table.data_df()["target_col"].value_counts()` |
 | Train & val loss both high, not converging | Underfitting — check `training_job.progress()` epoch metrics | Increase `max_epochs`, model capacity, or learning rate |
 
 ---
