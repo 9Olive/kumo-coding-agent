@@ -32,9 +32,6 @@ says another, the grammar wins.
 | `kumopql/grammar/PQLGrammar.g4` | TIME_UNIT tokens, AGGR tokens, PREDICT syntax, ASSUMING grammar, FOR EACH syntax | `platform/pql-syntax.md` |
 | `kumopql/validator/time_range_validator.py` | ASSUMING constraints, window validation, start >= 0 rules | `platform/pql-syntax.md`, `platform/pql-errors.md` |
 | `kumopql/validator/*.py` | All validator classes, error messages, validation rules | `platform/pql-errors.md` |
-| `docs/PQL_SYNTAX_REFERENCE.md` | Narrative syntax documentation | `platform/pql-syntax.md` |
-| `docs/PQL_FAILURE_CATEGORIES.md` | Failure category catalog | `platform/pql-errors.md` |
-| `docs/PQL_SYNTAX_ERRORS.md` | Error message catalog with examples | `platform/pql-errors.md` |
 
 ---
 
@@ -102,15 +99,13 @@ Compare against `platform/pql-errors.md`:
 - Changed validation rules → update constraint descriptions
 - Removed errors → remove from catalog
 
-### Step 5: Diff Documentation Files
+### Step 5: Cross-Check Sphinx API Docs (Optional)
 
-Read the narrative docs from the source repo:
-- `docs/PQL_SYNTAX_REFERENCE.md`
-- `docs/PQL_FAILURE_CATEGORIES.md`
-- `docs/PQL_SYNTAX_ERRORS.md`
-
-Compare against context docs for material changes (new sections, changed
-explanations, new examples).
+kumo-pql ships auto-generated Sphinx module references under `docs/source/modules/*.rst`
+(parser, rewriting, validator) rather than narrative syntax/error-catalog docs. These
+are generated from the same grammar and validator source already extracted in Steps
+3-4, so they add no independent signal - skip this step unless the module structure
+itself has changed.
 
 ### Step 6: Update Context Docs
 
