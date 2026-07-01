@@ -17,7 +17,7 @@ End-to-end workflow:
 4. Write a PQL query defining the prediction task.
 5. Generate training tables from historical data.
 6. Train a model.
-7. Run batch predictions or launch an online serving endpoint.
+7. Run batch predictions.
 
 ---
 
@@ -554,37 +554,6 @@ model = kumoai.Model.load_by_tag(tag="production-v1")
 # Re-create a Trainer from a previous job
 trainer = kumoai.Trainer.load(job_id="JOB_ID")
 trainer = kumoai.Trainer.load_from_tags(tags={"env": "production"})
-```
-
----
-
-## Online Serving
-
-Deploy a trained model as a real-time prediction endpoint.
-
-### Launch
-
-```python
-endpoint_future = result.launch_online_serving_endpoint()
-endpoint = endpoint_future.attach()  # Block until ready
-```
-
-### Predict
-
-```python
-result = endpoint.predict(
-    fkey={"user_id": "42"},
-    time=None,                       # Optional anchor timestamp
-    realtime_features=None,          # Optional feature overrides
-)
-```
-
-### Update / Destroy / Ping
-
-```python
-endpoint.update(refresh_graph_data=True)  # Refresh data + optionally update model
-endpoint.ping()                            # Check endpoint liveness
-endpoint.destroy()                         # Tear down endpoint
 ```
 
 ---
