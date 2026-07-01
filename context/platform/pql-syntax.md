@@ -307,14 +307,7 @@ PREDICT SUM(orders.amount, 0, 30, days) FOR EACH users.user_id ASSUMING orders.d
 ```
 Predict next-30-day spend if a 10% discount is applied.
 
-### 7. Infinite Past Window
-
-```
-PREDICT MAX(orders.amount, -INF, 30, days) FOR EACH users.user_id
-```
-Predict the maximum order amount from all history through the next 30 days.
-
-### 8. Complex Condition
+### 7. Complex Condition
 
 ```
 PREDICT SUM(orders.amount WHERE orders.category = 'electronics' AND orders.status = 'completed', 0, 30, days) FOR EACH users.user_id WHERE users.country IN ('US', 'CA')
