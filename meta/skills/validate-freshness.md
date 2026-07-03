@@ -28,8 +28,16 @@ For each repo in `_repo_versions`, check the latest published version:
 
 ```bash
 pip index versions kumoai 2>/dev/null | head -1     # kumo-sdk
-pip index versions kumopql 2>/dev/null | head -1     # kumo-pql
 pip index versions kumoapi 2>/dev/null | head -1     # kumo-api
+```
+
+`kumopql` is not published to PyPI (kumo-pql is tracked by commit hash, not a
+version release), so `pip index versions kumopql` returns nothing useful.
+Check its latest commit instead and compare against the pinned hash in
+`_repo_versions`:
+
+```bash
+gh api repos/kumo-ai/kumo-pql/commits/master -q .sha     # kumo-pql: compare to pinned hash
 ```
 
 Or check GitHub release tags if not on PyPI.
@@ -104,3 +112,4 @@ For **authored docs** (source_repo: n/a):
 - [ ] Date staleness checked as secondary signal
 - [ ] Freshness report generated
 - [ ] Behind repos flagged with target versions for sync
+

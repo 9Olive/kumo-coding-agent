@@ -9,7 +9,7 @@ on relational data using KumoRFM. RFM (Relational Foundation Model) lets you
 express a prediction task in PQL (Predictive Query Language), point it at a
 relational graph, and get results without any model training.
 
-**Package**: `kumoai.experimental.rfm` (requires `kumoai>=2.16.3`)
+**Package**: `kumoai.rfm` (requires `kumoai>=2.16.3`)
 
 Typical workflow:
 1. Build a `Graph` from local DataFrames, Snowflake tables, or a Semantic View.
@@ -54,13 +54,13 @@ for the full catalog.
 
 ## Graph Construction
 
-There are four paths to build an RFM graph. Every path produces the same
+There are seven paths to build an RFM graph. Every path produces the same
 `rfm.Graph` object.
 
 ### Path 1 -- Local pandas DataFrames
 
 ```python
-import kumoai.experimental.rfm as rfm
+import kumoai.rfm as rfm
 
 graph = rfm.Graph.from_data({
     "users": users_df,
@@ -92,12 +92,44 @@ graph = rfm.Graph.from_snowflake_semantic_view(
 Caveats: composite primary keys not fully supported; some cross-table
 expressions may be dropped.
 
-### Path 4 -- Manual SnowTable construction
+### Path 4 -- DuckDB database
+
+```python
+graph = rfm.Graph.from_duckdb(
+    "data.duckdb",
+    tables=["USERS", "ORDERS", "ITEMS"],
+)
+```
+
+### Path 5 -- SQLite database
+
+```python
+graph = rfm.Graph.from_sqlite(
+    "data.db",
+    tables=["users", "orders", "items"],
+)
+```
+
+`from_sqlite` accepts a database path (`str`/`Path`), an `AdbcSqliteConnection`,
+or a connection config — not a raw `sqlite3.Connection`.
+
+### Path 6 -- Databricks tables
+
+```python
+graph = rfm.Graph.from_databricks(
+    connection=connection,
+    catalog="MY_CATALOG",
+    schema="MY_SCHEMA",
+    tables=["USERS", "ORDERS", "ITEMS"],
+)
+```
+
+### Path 7 -- Manual SnowTable construction
 
 For finer control over database/schema per table:
 
 ```python
-from kumoai.experimental.rfm.backend.snow import SnowTable
+from kumoai.rfm.backend.snow import SnowTable
 
 graph = rfm.Graph(
     tables=[
@@ -307,6 +339,7 @@ pred_df = model.predict(
     query="PREDICT SUM(orders.amount, 0, 30, DAYS) FOR users.user_id IN (42, 123)",
     indices=None,
     explain=False,
+    return_embeddings=False,
     anchor_time=None,
     context_anchor_time=None,
     run_mode="fast",
@@ -325,6 +358,7 @@ pred_df = model.predict(
 | `query` | `str` | required | PQL query string |
 | `indices` | `list[str\|int\|float]` | `None` | Entity PKs to predict for. Overrides entities in the query. |
 | `explain` | `bool \| ExplainConfig` | `False` | Enable explainability. **Single entity + FAST mode only.** |
+| `return_embeddings` | `bool` | `False` | Whether to also return the embeddings for each prediction example. |
 | `anchor_time` | `pd.Timestamp \| "entity" \| None` | `None` | Prediction anchor. `None` = latest timestamp in graph. `"entity"` = per-entity timestamp from entity table's time column. |
 | `context_anchor_time` | `pd.Timestamp \| None` | `None` | Max anchor time for in-context learning examples. `None` = derived from `anchor_time`. |
 | `run_mode` | `str` | `"fast"` | `"fast"` (~1K examples), `"normal"` (~5K), `"best"` (~10K). |
@@ -535,6 +569,8 @@ pred_df = model.predict("PREDICT context.target=1 FOR EACH context.index")
 | `rfm.ExplainConfig()` | `skip_summary=False` | Config object |
 | `rfm.Graph.from_data(dfs)` | `infer_metadata=True`, `verbose=True` | `Graph` |
 | `rfm.Graph.from_sqlite(connection)` | `tables`, `edges`, `infer_metadata` | `Graph` |
+| `rfm.Graph.from_duckdb(connection)` | `tables`, `edges`, `infer_metadata` | `Graph` |
+| `rfm.Graph.from_databricks(connection)` | `tables`, `catalog`, `schema`, `edges`, `infer_metadata` | `Graph` |
 | `rfm.Graph(tables, edges)` | — | `Graph` |
 | `graph.link(src, fkey, dst)` | — | `self` |
 | `graph.infer_links()` | `verbose=True` | `self` |
@@ -601,8 +637,8 @@ pred_df = model.predict("PREDICT context.target=1 FOR EACH context.index")
             f"PREDICT SUM(table.col, {day_offset - 1}, {day_offset}, days) "
             f"FOR EACH entity.pk"
         )
-        with rfm.batch_mode(batch_size="max"):
-            pred_df = rfm.predict(query, indices=all_ids, anchor_time=ANCHOR, ...)
+        with model.batch_mode(batch_size="max"):
+            pred_df = model.predict(query, indices=all_ids, anchor_time=ANCHOR, ...)
         pred_df["timeframe"] = day_offset
         parts.append(pred_df)
     all_preds = pd.concat(parts, ignore_index=True)

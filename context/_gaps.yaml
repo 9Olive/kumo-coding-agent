@@ -188,7 +188,8 @@ documentation_gaps:
       - skills/iterate-model.md
     priority: medium
     added: "2026-03-30"
-    status: open
+    status: resolved
+    resolved: "2026-07-01"
 
   - id: doc-012
     feature: "prediction_table.anchor_time()"
@@ -201,7 +202,8 @@ documentation_gaps:
       - skills/train-model.md
     priority: low
     added: "2026-03-30"
-    status: open
+    status: resolved
+    resolved: "2026-07-01"
 
 # ─── Platform Gaps ────────────────────────────────────────────────────
 # Features that do NOT exist in the SDK — agent should refuse or workaround

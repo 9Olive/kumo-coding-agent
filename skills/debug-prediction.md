@@ -114,11 +114,10 @@ If you need to predict across `users -> orders -> products` (2 hops), break it i
 
 | Unsupported Operation | Alternative |
 |-----------------------|-------------|
-| `COUNT_DISTINCT` | Use SQL to pre-compute distinct counts, then predict on the result |
-| `FIRST` / `LAST` | Not available. Use SQL to extract first/last values. |
+| `COUNT_DISTINCT` | Blocked in RFM mode (fine-tuned only). Use SQL to pre-compute distinct counts for RFM. |
+| `FIRST` / `LAST` | Blocked in RFM mode (fine-tuned only). Use SQL to extract first/last values for RFM. |
 | `LIKE` / `CONTAINS` | Use SQL WHERE with LIKE, then pass filtered entity list via `entity_sql` |
 | Nested aggregations | `PREDICT AVG(SUM(...))` is invalid. Break into two queries. |
-| Link prediction | Predicting whether a relationship will form is not supported |
 | Static column in ASSUMING | `ASSUMING` only works with temporal aggregations |
 | `GROUP BY` in PQL | PQL does not support GROUP BY. Use `FOR EACH` for entity grouping. |
 | `ORDER BY` / `LIMIT` in PQL | Not supported. Apply ordering/limits in post-processing SQL. |
@@ -171,7 +170,7 @@ test_sql = "SELECT 'KNOWN_GOOD_ID' AS USER_ID"
 | `column 'X' not found in table 'Y'` | Wrong column name or wrong table | Verify with `column_dict` or `EXPLAIN_PQL` |
 | `entity column must be a primary key` | FOR EACH uses a non-PK column | Change to the table's actual PK column |
 | `invalid time range` | Start >= end or negative values | Use `(0, N, days)` with 0 <= start < end |
-| `cannot apply SUM to categorical` | Aggregation/stype mismatch | Use COUNT or MODE for categorical columns |
+| `cannot apply SUM to categorical` | Aggregation/stype mismatch | Use COUNT for categorical columns |
 | `no path between tables` | Missing FK link in graph | Add edge with `graph.link()` or reconstruct graph |
 | `ASSUMING requires temporal aggregation` | Used ASSUMING with a static prediction | Add time range to the aggregation |
 | All predictions are NULL | Entity IDs not in source data | Check that `entity_sql` returns IDs present in the graph |

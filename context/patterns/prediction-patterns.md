@@ -208,7 +208,7 @@ for a weighted or risk-adjusted ranking.
 SQL combine.
 
 **Critical notes:**
-- Time windows are **right-exclusive**: `(start, end]` — start excluded, end included.
+- Time windows are **left-exclusive**: `(start, end]` — start excluded, end included.
 - Windows must be **non-overlapping and contiguous** to avoid double-counting.
 - All windows share the same **ANCHOR_TIME**.
 
@@ -269,7 +269,7 @@ customer tiers?"
 
 **Reasoning:**
 1. "Weekly" + "next month" = 4 consecutive non-overlapping 7-day windows.
-2. Windows: (0,7], (7,14], (14,21], (21,28] — right-exclusive boundaries.
+2. Windows: (0,7], (7,14], (14,21], (21,28] — left-exclusive boundaries.
 3. All four PQL calls use the same ANCHOR_TIME.
 
 **Steps:**
@@ -289,11 +289,10 @@ When a prediction type is not supported by PQL:
 
 | Scenario | Why Unsupported | Alternative |
 |----------|----------------|-------------|
-| **Link prediction** ("Will X buy product Y?") | PQL cannot predict new relationships | Collaborative filtering outside PQL |
 | **Multi-hop prediction** ("Predict revenue for a region") | PQL predicts per-entity only | Pattern 3: predict per entity, aggregate with SQL |
 | **RANK syntax** | Not a PQL keyword | SQL `ORDER BY` + `LIMIT` on PQL results |
 | **Temporal ordering** ("In which month will X happen?") | PQL predicts aggregates, not event timing | Consecutive windows (Pattern 10) |
-| **COUNT_DISTINCT** | Not supported in PQL | Use `COUNT` or handle in SQL |
+| **COUNT_DISTINCT** | Blocked in RFM mode (fine-tuned only) | Use `COUNT`, handle in SQL, or switch to fine-tuned |
 | **Timestamp predictions** | PQL cannot predict a date/time value | Predict binary outcome over a window |
 | **String pattern matching** | No LIKE/REGEX in PQL | Filter with SQL first (Pattern 7) |
 | **Nested aggregations** | One aggregation level only | Break into multiple SQL+PQL steps |

@@ -355,7 +355,7 @@ Before submitting a PQL query, verify each item:
 - [ ] Query starts with `PREDICT` and contains `FOR EACH`
 - [ ] `FOR EACH` column is a **primary key**
 - [ ] Target column is **categorical or numeric** (not PK, FK, timestamp, or text)
-- [ ] If using aggregation: function is one of `SUM`, `AVG`, `MIN`, `MAX`, `COUNT`
+- [ ] If using aggregation: function is one of `SUM`, `AVG`, `MIN`, `MAX`, `COUNT`, `LIST_DISTINCT`
 - [ ] If using aggregation: `end` parameter is **positive** (window extends into the future)
 - [ ] If using aggregation: `start < end`
 - [ ] If using `SUM` or `AVG`: target column is **numeric**

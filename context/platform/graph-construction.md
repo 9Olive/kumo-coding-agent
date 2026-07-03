@@ -19,7 +19,7 @@ RFM exposes four construction paths, from highest to lowest automation.
 ### From DataFrames
 
 ```python
-import kumoai.experimental.rfm as rfm
+import kumoai.rfm as rfm
 
 graph = rfm.Graph.from_data({
     "users": users_df,
@@ -64,7 +64,7 @@ graph = rfm.Graph.from_sqlite(
 ### Manual Construction
 
 ```python
-from kumoai.experimental.rfm.backend.snow import SnowTable
+from kumoai.rfm.backend.snow import SnowTable
 
 tables = [
     SnowTable(conn, name="USERS", database="DB", schema="SCH"),
@@ -86,9 +86,8 @@ The SDK gives explicit control over every table, column, and edge.
 ```python
 import kumoai
 
-source = kumoai.SnowflakeSourceTable(
-    database="DB", schema="SCH", table="ORDERS", warehouse="WH",
-)
+connector = kumoai.SnowflakeConnector.get_by_name("my_snowflake")
+source = connector.table("ORDERS")
 table = kumoai.Table.from_source_table(source_table=source, primary_key="ORDER_ID")
 table.infer_metadata()
 
