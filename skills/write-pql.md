@@ -157,7 +157,7 @@ Choose the validation method that matches your environment.
 **In the RFM SDK (Python):**
 
 ```python
-import kumoai.experimental.rfm as rfm
+import kumoai.rfm as rfm
 
 model = rfm.KumoRFM(graph)
 # predict() will validate the query before execution.
@@ -167,13 +167,11 @@ entity_ids = graph["entity_table"].df["pk_column"].tolist()
 pred_df = model.predict(query, indices=entity_ids, run_mode="fast")
 ```
 
-**Using the PQuery object directly:**
+**Using the PredictiveQuery object directly:**
 
 ```python
-from kumoai.pql import PQuery
-
-pquery = PQuery.parse(query_string)
-pquery.validate(graph, verbose=True)
+pquery = kumoai.PredictiveQuery(graph, query_string)
+pquery.validate(verbose=True)
 ```
 
 If validation fails, read the error message carefully — it usually
@@ -259,7 +257,7 @@ FOR EACH entity_table.primary_key
 - [ ] Schema requirements verified: PK, FK path, time column, column types
 - [ ] Query written following canonical template
 - [ ] Pre-flight checklist passed (all 9 constraints)
-- [ ] Query validated via SDK, script, or PQuery parser
+- [ ] Query validated via SDK, script, or PredictiveQuery object
 - [ ] Validation errors resolved (if any)
 - [ ] Final query reviewed for correctness and completeness
 - [ ] Query documented with the original natural-language question

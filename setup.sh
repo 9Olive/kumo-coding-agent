@@ -22,7 +22,8 @@ else
       "Bash(.venv/bin/*)",
       "Bash(ls .venv/bin/*)",
       "Bash(echo *)",
-      "Bash(python -m venv .venv)"
+      "Bash(python -m venv .venv)",
+      "Bash(python3 -m venv .venv)"
     ]
   }
 }

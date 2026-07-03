@@ -121,7 +121,7 @@ Run:
 gh issue create \
   --repo kumo-ai/kumo-coding-agent \
   --title "<title>" \
-  --label "kumo-coding-agent,<type-label>" \
+  --label "<type-label>" \
   --assignee "manushmurali-kumo" \
   --body "<body>"
 ```

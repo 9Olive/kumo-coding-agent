@@ -99,13 +99,13 @@ Compare against `platform/pql-errors.md`:
 - Changed validation rules → update constraint descriptions
 - Removed errors → remove from catalog
 
-### Step 5: Diff Documentation Files
+### Step 5: Cross-Check Sphinx API Docs (Optional)
 
-`kumo-pql` ships no tracked narrative documentation; the grammar
-(`kumopql/grammar/PQLGrammar.g4`) and validators (`kumopql/validator/*.py`)
-are the authoritative source. If narrative docs are added to the repo in the
-future, read them here and compare against context docs for material changes
-(new sections, changed explanations, new examples).
+kumo-pql ships auto-generated Sphinx module references under `docs/source/modules/*.rst`
+(parser, rewriting, validator) rather than narrative syntax/error-catalog docs. These
+are generated from the same grammar and validator source already extracted in Steps
+3-4, so they add no independent signal - skip this step unless the module structure
+itself has changed.
 
 ### Step 6: Update Context Docs
 
@@ -136,6 +136,8 @@ platform/pql-errors.md:
 |-------|---------------|
 | `skills/write-pql.md` | Syntax changes, new aggregations, new time units |
 | `skills/debug-prediction.md` | New error messages or failure categories |
+| `skills/rfm-predict.md` | Query template table, aggregation functions, new time units, new syntax |
+| `skills/scope-prediction-task.md` | Query template table, aggregation functions, FOR EACH examples |
 
 ### Step 9: Grammar-First Verification
 

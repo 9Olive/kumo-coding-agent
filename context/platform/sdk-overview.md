@@ -79,12 +79,10 @@ connector = kumoai.SnowflakeConnector.get_by_name("my_snowflake")
 ### SourceTable inspection
 
 ```python
-source = connector.source_table("TABLE_NAME")
-source.column_names()
-source.column_types()
-source.head(n=5)
-source.count()
-source.schema()
+source = connector.table("TABLE_NAME")
+source.column_dict      # {name: SourceColumn} with dtype/stype info
+source.columns          # list of SourceColumn metadata
+source.head(num_rows=5) # sample rows as a DataFrame
 ```
 
 ---
@@ -194,6 +192,7 @@ Edges are directional: from the table with the FK to the table with the PK.
 graph.validate()          # Structural + type checks
 graph.print_metadata()    # Summary of tables and columns
 graph.print_links()       # All FK -> PK edges
+graph.get_table_stats(wait_for="full")  # Per-column stats: min/max/mean/median/null_count/distributions
 ```
 
 ### Snapshot
@@ -298,6 +297,32 @@ training_table.head(n=10)
 training_table.count()
 training_table.stats()
 training_table.label_distribution()
+training_table.data_df()  # Load the full table into memory as a pandas DataFrame
+```
+
+### Export and update
+
+Export the training table to add a custom weight column, then re-attach the modified table with `update()`:
+
+```python
+from kumoai.artifact_export import TrainingTableExportConfig
+
+export_result = training_table.export(
+    output_config=TrainingTableExportConfig(
+        output_types={"training_table"},
+        output_connector=my_connector,
+        output_table_name="my_training_table_export",
+    ),
+    non_blocking=False,
+)
+
+# After modifying the exported table externally (e.g. adding a weight
+# column), re-attach it as the training table used for training:
+training_table.update(
+    source_table=modified_source_table,
+    train_table_mod=train_table_mod_spec,
+    validate=True,
+)
 ```
 
 ---
@@ -469,6 +494,7 @@ pred_plan.forecast_length = 12     # For forecasting tasks
 pred_plan.lag_timesteps = 7        # Autoregressive lag features
 
 pred_table = pq.generate_prediction_table(pred_plan, non_blocking=False)
+pred_table.anchor_time   # Read back the anchor time used. A property, returns None for custom or path-specified tables.
 ```
 
 ### Batch Prediction
@@ -618,6 +644,7 @@ endpoint.destroy()                         # Tear down endpoint
 | `Table` | `.validate()` | Check schema correctness |
 | `Graph` | `.validate()` | Structural checks |
 | `Graph` | `.infer_links()` | Auto-detect FK->PK edges |
+| `Graph` | `.get_table_stats(wait_for=)` | Per-column stats (min/max/mean/median/null_count/distributions) |
 | `PredictiveQuery` | `.validate()` | PQL syntax check |
 | `PredictiveQuery` | `.get_task_type()` | Infer ML task type |
 | `PredictiveQuery` | `.suggest_training_table_plan()` | Plan training data |
@@ -625,8 +652,11 @@ endpoint.destroy()                         # Tear down endpoint
 | `PredictiveQuery` | `.suggest_model_plan()` | Plan model configuration |
 | `PredictiveQuery` | `.generate_training_table(plan)` | Generate training data |
 | `PredictiveQuery` | `.generate_prediction_table(plan)` | Generate prediction data |
+| `TrainingTable` | `.export(output_config)` | Export the training table for external modification |
+| `TrainingTable` | `.update(source_table, train_table_mod)` | Re-attach a modified training table |
 | `Trainer` | `.fit(graph, train_table)` | Train model |
 | `Trainer` | `.predict(graph, pred_table)` | Run batch predictions |
+| `TrainingTable` | `.data_df()` | Load training data into memory as a DataFrame |
 | `TrainingJobResult` | `.metrics()` | Evaluation results |
 | `TrainingJobResult` | `.model_plan` | Actual ModelPlan after AutoML |
 | `TrainingJobResult` | `.holdout_df()` | Holdout split as DataFrame (ENTITY, TARGET, TARGET_PRED) |
@@ -634,6 +664,8 @@ endpoint.destroy()                         # Tear down endpoint
 | `TrainingJob` | `.progress()` | Per-epoch training metrics |
 | `TrainingJob` | `.attach()` | Block with live progress bar |
 | `TrainingJob` | `.cancel()` | Cancel in-progress job |
+| `PredictionTable` | `.anchor_time` | Anchor time used for generation - a property; None if custom/path-specified |
+| `BaselineJobResult` | `.metrics()` | Evaluation metrics vs. baseline models |
 | `BatchPredictionResult` | `.summary()` | Prediction count |
 | `BatchPredictionResult` | `.predictions_urls()` | Parquet URLs |
 | `BatchPredictionResult` | `.embeddings_df()` | Entity embeddings |
@@ -667,3 +699,4 @@ endpoint.destroy()                         # Tear down endpoint
 8. **Using wrong ModelPlan param names.** Use `optimization.base_lr` (not `learning_rate`), `optimization.max_epochs` (not `epochs`), `model_architecture.channels` (not `hidden_channels`). After training, inspect `result.model_plan` to see what AutoML actually chose.
 9. **Training on too-recent data.** Customize `plan.start_time`/`end_time` for sufficient history.
 10. **Forgetting to tag production models.** Use `result.tag()` for retrieval.
+
