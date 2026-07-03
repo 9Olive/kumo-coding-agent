@@ -26,8 +26,8 @@ released. Covers RFM API, fine-tuned SDK, graph construction, and connectors.
 
 | Source File (repo-relative) | What to Extract | Affected Context Doc |
 |---|---|---|
-| `kumoai/experimental/rfm/rfm.py` | KumoRFM.predict(), evaluate(), batch_mode(), get_train_table(), ExplainConfig | `platform/rfm-overview.md` |
-| `kumoai/experimental/rfm/graph.py` | RFM Graph, from_data, from_snowflake, validate, link/unlink | `platform/rfm-overview.md`, `platform/graph-construction.md` |
+| `kumoai/rfm/rfm.py` | KumoRFM.predict(), evaluate(), batch_mode(), get_train_table(), ExplainConfig | `platform/rfm-overview.md` |
+| `kumoai/rfm/graph.py` | RFM Graph, from_data, from_snowflake, validate, link/unlink | `platform/rfm-overview.md`, `platform/graph-construction.md` |
 | `kumoai/trainer/trainer.py` | Trainer.fit(), predict(), baseline() signatures | `platform/sdk-overview.md` |
 | `kumoai/trainer/job.py` | TrainingJobResult, BatchPredictionJobResult, progress(), model_plan | `platform/sdk-overview.md` |
 | `kumoai/trainer/online_serving.py` | OnlineServingEndpoint, ping(), update(), predict() | `platform/sdk-overview.md` |

@@ -1,24 +1,11 @@
 # kumo-coding-agent Slash Commands
 
-Three commands for working with the kumo-coding-agent. Available automatically
+Two commands for working with the kumo-coding-agent. Available automatically
 when you open kumo-coding-agent in Claude Code or Codex — no setup needed.
 
 ---
 
 ## Commands
-
-### `/kumo-import`
-
-Download kumo-coding-agent from GitHub into your current project.
-
-```
-/kumo-import
-```
-
-What it does:
-- Downloads `kumo-coding-agent/` from GitHub (no local clone needed)
-- Adds a reference to your project's `CLAUDE.md`
-- Adds `kumo-coding-agent/scratch/` to `.gitignore`
 
 ### `/kumo-issue [description]`
 
@@ -50,7 +37,7 @@ If no description is given, you'll be asked interactively (Claude Code only).
 
 ### In kumo-coding-agent (no setup needed)
 
-The same three commands are exposed to both tools from this repo:
+The same two commands are exposed to both tools from this repo:
 
 - **Claude Code** auto-discovers `.claude/skills/`
 - **Codex** auto-discovers `.agents/skills/` (mirrored to the same skill definitions)
@@ -72,7 +59,7 @@ If you prefer manual setup, symlink the same skill folders into those directorie
 
 ### GitHub CLI (`gh`)
 
-Required for all three commands.
+Required for both commands.
 
 ```bash
 brew install gh          # macOS

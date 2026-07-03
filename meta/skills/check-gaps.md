@@ -86,7 +86,7 @@ Look for SDK features that aren't in `_gaps.yaml` AND aren't in the agent docs:
 # List all public methods on key classes
 grep -rn "def [a-z]" "$KUMOAI_ROOT/trainer/job.py" | grep -v "def _"
 grep -rn "def [a-z]" "$KUMOAI_ROOT/graph/graph.py" | grep -v "def _"
-grep -rn "def [a-z]" "$KUMOAI_ROOT/experimental/rfm/rfm.py" | grep -v "def _"
+grep -rn "def [a-z]" "$KUMOAI_ROOT/rfm/rfm.py" | grep -v "def _"
 ```
 
 Cross-reference against what's documented in `context/platform/sdk-overview.md`

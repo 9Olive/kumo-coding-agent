@@ -130,7 +130,7 @@ prediction_job = trainer.predict(
 )
 
 print(f"Prediction job ID: {prediction_job.job_id}")
-print(f"Status: {prediction_job.status()}")   # 'PENDING', 'RUNNING', 'COMPLETED', 'FAILED'
+print(f"Status: {prediction_job.status().status}")   # JobStatusReport.status: NOT_STARTED, QUEUED, RUNNING, DONE, or FAILED (kumoapi.common.JobStatus)
 
 # Block until complete
 prediction_result = prediction_job.attach()
