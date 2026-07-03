@@ -32,9 +32,6 @@ says another, the grammar wins.
 | `kumopql/grammar/PQLGrammar.g4` | TIME_UNIT tokens, AGGR tokens, PREDICT syntax, ASSUMING grammar, FOR EACH syntax | `platform/pql-syntax.md` |
 | `kumopql/validator/time_range_validator.py` | ASSUMING constraints, window validation, start >= 0 rules | `platform/pql-syntax.md`, `platform/pql-errors.md` |
 | `kumopql/validator/*.py` | All validator classes, error messages, validation rules | `platform/pql-errors.md` |
-| `docs/PQL_SYNTAX_REFERENCE.md` | Narrative syntax documentation | `platform/pql-syntax.md` |
-| `docs/PQL_FAILURE_CATEGORIES.md` | Failure category catalog | `platform/pql-errors.md` |
-| `docs/PQL_SYNTAX_ERRORS.md` | Error message catalog with examples | `platform/pql-errors.md` |
 
 ---
 
@@ -104,13 +101,11 @@ Compare against `platform/pql-errors.md`:
 
 ### Step 5: Diff Documentation Files
 
-Read the narrative docs from the source repo:
-- `docs/PQL_SYNTAX_REFERENCE.md`
-- `docs/PQL_FAILURE_CATEGORIES.md`
-- `docs/PQL_SYNTAX_ERRORS.md`
-
-Compare against context docs for material changes (new sections, changed
-explanations, new examples).
+`kumo-pql` ships no tracked narrative documentation; the grammar
+(`kumopql/grammar/PQLGrammar.g4`) and validators (`kumopql/validator/*.py`)
+are the authoritative source. If narrative docs are added to the repo in the
+future, read them here and compare against context docs for material changes
+(new sections, changed explanations, new examples).
 
 ### Step 6: Update Context Docs
 
